@@ -1,2 +1,5 @@
 .vs
 /DoobesBackup.Service/node_modules
+/DoobesBackup.Service/obj
+*.user
+project.lock.json
