@@ -235,5 +235,3 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 
-# Exclude the external lib folder
-lib/
