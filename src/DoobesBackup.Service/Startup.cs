@@ -5,13 +5,16 @@
 //-----------------------------------------------------------------------
 namespace DoobesBackup.Service
 {
+    using Domain;
     using DoobesBackup.Service.Configuration;
+    using Infrastructure;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Nancy.Owin;
+    using System;
 
     /// <summary>
     /// The startup class for the service
@@ -44,6 +47,9 @@ namespace DoobesBackup.Service
         /// <param name="services">The current services collection</param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<ISyncConfigurationRepository, SyncConfigurationRepository>();
+            services.AddScoped<IBackupDestinationRepository, BackupDestinationRepository>();
+            services.AddSingleton(services);
         }
 
         /// <summary>
@@ -52,11 +58,27 @@ namespace DoobesBackup.Service
         /// <param name="app">The application builder</param>
         /// <param name="env">The current hosting environment details</param>
         /// <param name="loggerFactory">The logger factory</param>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(
+            IApplicationBuilder app, 
+            IHostingEnvironment env, 
+            ILoggerFactory loggerFactory, 
+            ISyncConfigurationRepository syncConfigurationRepository,
+            IServiceCollection services)
         {
+            // Initialise logging
             loggerFactory.AddConsole(this.Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            
 
+            // Setup database configuration
+            DatabaseInitializer.Initialize();
+
+            //
+            // DEMO - Create a dummy configuration
+            //
+            syncConfigurationRepository.Create(new SyncConfiguration(null, 60, new BackupSource(null, "Synology NAS"), new BackupDestination(null, "AWS S3")));
+            
+            // Specify error message display
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -66,11 +88,15 @@ namespace DoobesBackup.Service
                 app.UseExceptionHandler("/Home/Error");
             }
             
+            // Map application configuration
             var config = this.Configuration;
             var appConfig = new AppConfiguration();
             ConfigurationBinder.Bind(config, appConfig);
 
-            app.UseOwin(x => x.UseNancy(opt => opt.Bootstrapper = new NancyBootstrapper(appConfig)));
+            // Wire up nancy
+            app.UseOwin(x => 
+                x.UseNancy(opt => 
+                    opt.Bootstrapper = new NancyBootstrapper(appConfig, services, app.ApplicationServices)));
         }
     }
 }

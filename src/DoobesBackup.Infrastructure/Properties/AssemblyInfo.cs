@@ -1,0 +1,24 @@
+﻿//-----------------------------------------------------------------------
+// <copyright file="AssemblyInfo.cs" company="doobes.com">
+//     Copyright (c) doobes.com. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+
+// General Information about an assembly is controlled through the following
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("DoobesBackup.Infrastructure")]
+[assembly: AssemblyTrademark("")]
+
+// Setting ComVisible to false makes the types in this assembly not visible
+// to COM components.  If you need to access a type in this assembly from
+// COM, set the ComVisible attribute to true on that type.
+[assembly: ComVisible(false)]
+
+// The following GUID is for the ID of the typelib if this project is exposed to COM
+[assembly: Guid("70b249e5-4b1f-439a-b8d3-19f022213493")]

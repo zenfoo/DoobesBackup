@@ -3,22 +3,26 @@
 //     Copyright (c) doobes.com. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
+
 namespace DoobesBackup.Domain
 {
     /// <summary>
     /// Configuration for syncing files from source to destination
     /// </summary>
-    public class SyncConfiguration
+    public class SyncConfiguration : IAggregateRoot
     {
         /// <summary>
         /// Initializes a new instance of the SyncConfiguration class
         /// </summary>
         /// <param name="id">The id assigned to this sync configuration</param>
+        /// <param name="intervalSeconds">The number of seconds interval between sync attempts</param>
         /// <param name="source">The backup source</param>
         /// <param name="destination">The backup destination</param>
-        public SyncConfiguration(int id, BackupSource source, BackupDestination destination)
+        public SyncConfiguration(Guid? id, int intervalSeconds, BackupSource source, BackupDestination destination)
         {
             this.Id = id;
+            this.IntervalSeconds = intervalSeconds;
             this.Source = source;
             this.Destination = destination;
         }
@@ -26,7 +30,12 @@ namespace DoobesBackup.Domain
         /// <summary>
         /// Gets the configuration id
         /// </summary>
-        public int Id { get; private set; }
+        public Guid? Id { get; private set; }
+
+        /// <summary>
+        /// The number of seconds between sync executions
+        /// </summary>
+        public int IntervalSeconds { get; private set; }
 
         /// <summary>
         /// Gets the backup source

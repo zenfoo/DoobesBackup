@@ -14,23 +14,20 @@ namespace DoobesBackup.Service.Modules
     /// </summary>
     public class SyncConfigurationsModule : NancyModule
     {
+        private readonly ISyncConfigurationRepository syncConfigurationRepository;
+
         /// <summary>
         /// Initializes a new instance of the SyncConfigurationsModule class
         /// </summary>
-        public SyncConfigurationsModule() : base("/syncconfigurations")
+        public SyncConfigurationsModule(ISyncConfigurationRepository syncConfigurationRepository) : base("/syncconfigurations")
         {
+            this.syncConfigurationRepository = syncConfigurationRepository;
+
             this.Get(
                 "/", 
                 args => 
                 {
-                    return Response.AsJson<IList<SyncConfiguration>>(
-                        new List<SyncConfiguration>()
-                        {
-                            new SyncConfiguration(
-                                1,
-                                new BackupSource("Synology NAS"),
-                                new BackupDestination("AWS S3"))
-                        });
+                    return Response.AsJson(this.syncConfigurationRepository.GetAll());
                 });
         }
     }

@@ -1,17 +1,16 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="BackupSourceTests.cs" company="doobes.com">
+// <copyright file="BackupDestinationTests.cs" company="doobes.com">
 //     Copyright (c) doobes.com. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
 namespace DoobesBackup.Domain.UnitTests
 {
-    using System.Reflection;
     using Xunit;
-    
+
     /// <summary>
-    /// Tests for the BackupSource class
+    /// Tests for the BackupDestination class
     /// </summary>
-    public class BackupSourceTests
+    public class BackupDestinationTests
     {
         /// <summary>
         /// Test the name property is assigned correctly
@@ -19,16 +18,8 @@ namespace DoobesBackup.Domain.UnitTests
         [Fact]
         public void ConstructBackupSource_NameAppliedCorrectly()
         {
-            var backupSource = new BackupSource(null, "Synology NAS");
+            var backupSource = new BackupDestination(null, "Synology NAS");
             Assert.Equal("Synology NAS", backupSource.Name);
         }
-
-        [Fact]
-        public void TestAssignmentOfTypeToEntity()
-        {
-            var backupSourceType = typeof(BackupSource);
-            Assert.True(typeof(IEntity).IsAssignableFrom(backupSourceType));
-        }
-
     }
 }
