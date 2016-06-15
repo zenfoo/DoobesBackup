@@ -10,6 +10,7 @@ namespace DoobesBackup.Infrastructure
     using DoobesBackup.Domain;
     using System.Linq.Expressions;
     using Dapper;
+
     /// <summary>
     /// Base implementation of the repository pattern using dapper
     /// </summary>
@@ -61,8 +62,7 @@ namespace DoobesBackup.Infrastructure
 
         /// <inheritdoc />
         public abstract bool Create(T entity);
-
-
+        
         /// <inheritdoc />
         public abstract bool Update(T entity);
         

@@ -13,9 +13,11 @@ namespace DoobesBackup.Service
     using Microsoft.Extensions.DependencyInjection;
     using Nancy.TinyIoc;
     using Domain;
-    using Infrastructure;/// <summary>
-                         /// Bootstrap the nancy framework
-                         /// </summary>
+    using Infrastructure;
+    
+    /// <summary>
+    /// Bootstrap the nancy framework
+    /// </summary>
     public class NancyBootstrapper : DefaultNancyBootstrapper
     {
         private readonly IServiceCollection services;
