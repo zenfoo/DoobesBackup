@@ -14,8 +14,8 @@ namespace DoobesBackup.Web
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseKestrel()
                 .UseStartup<Startup>()
+                .UseUrls("http://localhost:5001")
                 .Build();
 
             host.Run();

@@ -23,8 +23,11 @@ gulp.task("clean:libs", function (cb) {
 gulp.task("clean", ["clean:libs"]);
 
 gulp.task("copy:libs", ["clean"], function () {
-    var angular2 = gulp.src(paths.node_modules + "angular2/bundles/**/*.js")
-        .pipe(gulp.dest(paths.libDest + "angular2"));
+    var angular2 = gulp.src(paths.node_modules + "@angular/**/*.js")
+        .pipe(gulp.dest(paths.libDest + "@angular"));
+
+    var angular2InMemoryWebApi = gulp.src(paths.node_modules + "angular2-in-memory-web-api/**/*.js")
+        .pipe(gulp.dest(paths.libDest + "angular2-in-memory-web-api"));
 
     var es6_shim = gulp.src([
             paths.node_modules + "es6-shim/*.js",
@@ -34,7 +37,7 @@ gulp.task("copy:libs", ["clean"], function () {
     var systemjs = gulp.src(paths.node_modules + "systemjs/dist/*.js")
         .pipe(gulp.dest(paths.libDest + "systemjs"));
 
-    var rxjs = gulp.src(paths.node_modules + "rxjs/bundles/**/*.js")
+    var rxjs = gulp.src(paths.node_modules + "rxjs/**/*.js")
         .pipe(gulp.dest(paths.libDest + "rxjs"));
 
     var corejs = gulp.src(paths.node_modules + "core-js/client/**/*.js")
@@ -46,7 +49,7 @@ gulp.task("copy:libs", ["clean"], function () {
     var reflect = gulp.src(paths.node_modules + "reflect-metadata/Reflect.js")
         .pipe(gulp.dest(paths.libDest + "reflect-metadata"));
 
-    return merge(angular2, es6_shim, systemjs, rxjs, corejs, zonejs, reflect);
+    return merge(angular2, angular2InMemoryWebApi, es6_shim, systemjs, rxjs, corejs, zonejs, reflect);
 });
 
 gulp.task("build", ["copy:libs"]);
