@@ -3,24 +3,81 @@
     <title>Doobes Backup</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="lib/gentelella/css/custom.min.css">
     <link rel="stylesheet" href="css/site.css">
-    <!-- 1. Load libraries -->
-    <!-- Polyfill(s) for older browsers -->
-    
-    <script src="lib/core-js/shim.min.js"></script>
 
-    <script src="lib/zone.js/zone.min.js"></script>
+    <!-- Load libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="lib/core-js/shim.min.js"></script>
+    <script src="lib/zone-js/zone.min.js"></script>
     <script src="lib/reflect-metadata/Reflect.js"></script>
     <script src="lib/systemjs/system.js"></script>
+    <script src="lib/gentelella/js/custom.min.js"></script>
 
-    <!-- 2. Configure SystemJS -->
+    <!-- Configure SystemJS -->
     <script src="systemjs.config.js"></script>
     <script>
         System.import('app').catch(function (err) { console.error(err); });
     </script>
 </head>
-<!-- 3. Display the application -->
-<body>
-    <my-app>Loading...</my-app>
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            <div class="row">
+                <div class="col-md-3 left_col">
+                    <div class="left_col scroll-view">
+                        <div class="navbar nav_title" style="border: 0;">
+                            <a href="/" class="site_title"><i class="fa fa-paw"></i> <span>Doobes Backup</span></a>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                            <div class="menu_section active">
+                                <h3>General</h3>
+                                <ul class="nav side-menu" style="">
+                                    <li class="active">
+                                        <a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu" style="display: block;">
+                                            <li class="current-page"><a href="index.html">Dashboard</a></li>
+                                            <li><a href="index2.html">Dashboard2</a></li>
+                                            <li><a href="index3.html">Dashboard3</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a><i class="fa fa-edit"></i> Forms <span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu">
+                                            <li><a href="form.html">General Form</a></li>
+                                            <li><a href="form_advanced.html">Advanced Components</a></li>
+                                            <li><a href="form_validation.html">Form Validation</a></li>
+                                            <li><a href="form_wizards.html">Form Wizard</a></li>
+                                            <li><a href="form_upload.html">Form Upload</a></li>
+                                            <li><a href="form_buttons.html">Form Buttons</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="top_nav">
+                    <div class="nav_menu">
+                        <nav class="" role="navigation">
+                            <div class="nav toggle">
+                                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="right_col" role="main" style="min-height: 1170px;">
+                    <my-app>Loading...</my-app>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

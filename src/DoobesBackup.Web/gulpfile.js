@@ -1,7 +1,13 @@
 ﻿/// <binding BeforeBuild='build' Clean='clean' />
 var gulp = require("gulp"),
     merge = require("merge-stream"),
-    rimraf = require("rimraf");
+    rimraf = require("rimraf"),
+    ts = require("gulp-typescript"),
+    runSequence = require("run-sequence");
+
+
+var buildErrors = false;
+
 
 // Paths
 var webroot = "./wwwroot/";
@@ -9,8 +15,35 @@ var paths = {
     webroot: webroot,
     libDest: webroot + "lib/",
     cssDest: webroot + "css/",
-    node_modules: "./node_modules/"
+    node_modules: "./node_modules/",
+    tsSource: webroot + "app/**/*.ts",
+    tsDefSource: "./typings/**/*.d.ts",
+    tsOutput: webroot + "app",
+    tsDefOutput: "./typings/app"
 };
+
+var tsProject = ts.createProject("./tsconfig.json");
+
+gulp.task("ts:compile", function () {
+    
+    var tsResult = gulp
+        .src([
+            paths.tsSource,
+            paths.tsDefSource
+        ])
+        .pipe(
+            ts(
+                tsProject,
+                undefined,
+                ts.reporter.fullReporter(true)))
+        .on("error", onError)
+        .on("end", handleErrors);
+
+    return merge(
+        tsResult.dts.pipe(gulp.dest(paths.tsDefOutput)),
+        tsResult.js.pipe(gulp.dest(paths.tsOutput)));
+});
+
 
 gulp.task("clean:libs", function (cb) {
     rimraf(paths.libDest, cb);
@@ -22,9 +55,9 @@ gulp.task("clean:libs", function (cb) {
 
 gulp.task("clean", ["clean:libs"]);
 
-gulp.task("copy:libs", ["clean"], function () {
-    var angular2 = gulp.src(paths.node_modules + "@angular/**/*.js")
-        .pipe(gulp.dest(paths.libDest + "@angular"));
+gulp.task("copy:libs", function () {
+    var angular2 = gulp.src(paths.node_modules + '@angular/**/*.js')
+        .pipe(gulp.dest(paths.libDest + '@angular'));
 
     var angular2InMemoryWebApi = gulp.src(paths.node_modules + "angular2-in-memory-web-api/**/*.js")
         .pipe(gulp.dest(paths.libDest + "angular2-in-memory-web-api"));
@@ -44,18 +77,61 @@ gulp.task("copy:libs", ["clean"], function () {
         .pipe(gulp.dest(paths.libDest + "core-js"));
 
     var zonejs = gulp.src(paths.node_modules + "zone.js/dist/**/*.js")
-        .pipe(gulp.dest(paths.libDest + "zone.js"));
+        .pipe(gulp.dest(paths.libDest + "zone-js"));
 
     var reflect = gulp.src(paths.node_modules + "reflect-metadata/Reflect.js")
         .pipe(gulp.dest(paths.libDest + "reflect-metadata"));
 
-    return merge(angular2, angular2InMemoryWebApi, es6_shim, systemjs, rxjs, corejs, zonejs, reflect);
+    var bootstrap = gulp.src(paths.node_modules + "bootstrap/dist/**/*")
+        .pipe(gulp.dest(paths.libDest + "bootstrap"));
+
+    var gentelella = gulp.src(paths.node_modules + "gentelella/build/**/*")
+        .pipe(gulp.dest(paths.libDest + "gentelella"));
+
+    var jquery = gulp.src(paths.node_modules + "jquery/dist/**/*.js")
+        .pipe(gulp.dest(paths.libDest + "jquery"));
+
+    var fontawesome = gulp.src(paths.node_modules + "font-awesome/**/*")
+        .pipe(gulp.dest(paths.libDest + "font-awesome"));
+
+    return merge(
+        angular2,
+        angular2InMemoryWebApi,
+        es6_shim,
+        systemjs,
+        rxjs,
+        corejs,
+        zonejs,
+        reflect,
+        bootstrap,
+        gentelella,
+        jquery,
+        fontawesome);
 });
 
-gulp.task("build", ["copy:libs"]);
 
+gulp.task('build', function (done) {
+    runSequence("clean", 'ts:compile', 'copy:libs', function () {
+        console.log('Build sequence completed!');
+        done();
+    });
+});
 
+function handleErrors() {
+    if (buildErrors) {
+        process.exit(1);
+    }
+}
 
+function onError(error)
+{
+    buildErrors = true;
+    console && console.log(error.message);
+}
+
+function onWarn(error) {
+    console && console.log(error.message);
+}
 
 ///// <binding Clean='clean' />
 //"use strict";
