@@ -237,3 +237,11 @@ _Pvt_Extensions
 
 # Stylecop files
 Stylecop.Cache
+
+# =====================
+
+# Custom ignores
+
+# Exclude js files within the app folder - will be built from TS
+src/DoobesBackup.UI/app/**/*.js
+src/DoobesBackup.UI/app/**/*.js.map

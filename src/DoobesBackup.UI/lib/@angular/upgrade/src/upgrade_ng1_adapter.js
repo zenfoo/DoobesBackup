@@ -1,3 +1,10 @@
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 "use strict";
 var core_1 = require('@angular/core');
 var angular = require('./angular_js');
@@ -81,7 +88,10 @@ var UpgradeNg1ComponentAdapterBuilder = (function () {
                             this.outputs.push(outputName);
                             this.outputsRename.push(outputNameRenameChange);
                             this.propertyMap[outputName] = localName;
-                        // don't break; let it fall through to '@'
+                            this.inputs.push(inputName);
+                            this.inputsRename.push(inputNameRename);
+                            this.propertyMap[inputName] = localName;
+                            break;
                         case '@':
                         // handle the '<' binding of angular 1.5 components
                         case '<':
@@ -138,6 +148,9 @@ var UpgradeNg1ComponentAdapterBuilder = (function () {
             return compile(div.childNodes);
         }
     };
+    /**
+     * Upgrade ng1 components into Angular 2.
+     */
     UpgradeNg1ComponentAdapterBuilder.resolve = function (exportedComponents, injector) {
         var promises = [];
         var compile = injector.get(constants_1.NG1_COMPILE);
