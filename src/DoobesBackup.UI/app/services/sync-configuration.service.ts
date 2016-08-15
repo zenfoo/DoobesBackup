@@ -1,26 +1,37 @@
 ﻿import { Injectable } from "@angular/core";
-import { Http, Response, Headers } from "@angular/http";
+import { HEROES } from "./mock-heroes";
+import { Hero } from "../models/hero.model";
+
+// import { Http, Response, Headers } from "@angular/http";
 import "rxjs/add/operator/map";
 import "rxjs/Rx";
-import { Observable } from "rxjs/Observable";
-import { SyncConfiguration } from "../models/sync-configuration.model";
-import { Configuration } from "../Constants";
+// import { Observable } from "rxjs/Observable";
+// import { SyncConfiguration } from "../models/sync-configuration.model";
+import { AppConfiguration } from "../app-configuration";
 
 @Injectable()
 export class SyncConfigurationService {
 
-    private actionUrl: string;
-    private headers: Headers;
+    // private actionUrl: string;
+    // private headers: Headers;
 
-    constructor(private _http: Http, private _configuration: Configuration) {
-
+    constructor(/*private _http: Http, */private _configuration: AppConfiguration) {
+        /*
         this.actionUrl = _configuration.ServerWithApiUrl + "syncconfigurations/";
-
+        
         this.headers = new Headers();
         this.headers.append("Content-Type", "application/json");
         this.headers.append("Accept", "application/json");
+        */
     }
 
+    getAll(): Promise<Hero[]> {
+        return new Promise<Hero[]>((resolve: (value: Hero[]) => void) => {
+            setTimeout(() => resolve(HEROES), 2000)
+        });
+    }
+
+    /*
     public GetAll = (): Observable<SyncConfiguration[]> => {
         return this._http.get(this.actionUrl)
             .map((response: Response) => <SyncConfiguration[]>response.json())
@@ -55,5 +66,9 @@ export class SyncConfigurationService {
     private handleError(error: Response) {
         console.error(error);
         return Observable.throw(error.json().error || "Server error");
-    };
+    };*/
+}
+
+interface ResolveCallback {
+    (n: Hero[]): any;
 }
