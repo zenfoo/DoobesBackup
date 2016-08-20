@@ -2,7 +2,7 @@
 import { HEROES } from "./mock-heroes";
 import { Hero } from "../models/hero.model";
 
-// import { Http, Response, Headers } from "@angular/http";
+import { Http, Response, Headers } from "@angular/http";
 import "rxjs/add/operator/map";
 import "rxjs/Rx";
 // import { Observable } from "rxjs/Observable";
@@ -15,7 +15,7 @@ export class SyncConfigurationService {
     // private actionUrl: string;
     // private headers: Headers;
 
-    constructor(/*private _http: Http, */private _configuration: AppConfiguration) {
+    constructor(private _http: Http, private _configuration: AppConfiguration) {
         /*
         this.actionUrl = _configuration.ServerWithApiUrl + "syncconfigurations/";
         

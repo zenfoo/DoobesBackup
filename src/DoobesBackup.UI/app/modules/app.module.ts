@@ -6,10 +6,11 @@ import { HeroesComponent } from "../components/heroes.component";
 import { HeroDetailComponent } from "../components/hero-detail.component";
 import { AppConfiguration } from "../app-configuration";
 import { SyncConfigurationService } from "../services/sync-configuration.service";
+import { MainMenuComponent } from "../components/main-menu.component";
 
 @NgModule({
     imports: [ BrowserModule, FormsModule ],
-    declarations: [ AppComponent, HeroesComponent, HeroDetailComponent],
+    declarations: [ AppComponent, HeroesComponent, HeroDetailComponent, MainMenuComponent],
     providers: [ AppConfiguration, SyncConfigurationService ],
     bootstrap: [ AppComponent ]
 })

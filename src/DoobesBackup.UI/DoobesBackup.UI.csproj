@@ -43,6 +43,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="app\components\main-menu.component.ts" />
     <Content Include="lib\%40angular\common\bundles\common.umd.js" />
     <Content Include="lib\%40angular\common\bundles\common.umd.min.js" />
     <Content Include="lib\%40angular\common\esm\index.js" />
@@ -1609,6 +1610,7 @@
     <TypeScriptCompile Include="app\components\hero-detail.component.ts" />
     <TypeScriptCompile Include="app\app-configuration.ts" />
     <TypeScriptCompile Include="app\models\backup-source.model.ts" />
+    <TypeScriptCompile Include="app\models\menu-item.model.ts" />
     <TypeScriptCompile Include="app\models\sync-configuration.model.ts" />
     <TypeScriptCompile Include="app\modules\app.module.ts" />
     <TypeScriptCompile Include="app\services\mock-heroes.ts" />

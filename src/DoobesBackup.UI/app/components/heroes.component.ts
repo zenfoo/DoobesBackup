@@ -4,8 +4,6 @@ import { SyncConfigurationService } from "../services/sync-configuration.service
 // import { Http } from "@angular/http";
 // import { Configuration } from "../Constants";
 
-
-
 @Component({
     selector: "my-heroes",
     template: `
