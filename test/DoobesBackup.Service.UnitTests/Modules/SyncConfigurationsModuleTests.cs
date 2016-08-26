@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------
 namespace DoobesBackup.Domain.UnitTests
 {
+    using Infrastructure;
     using Moq;
     using Nancy;
     using Nancy.Testing;

@@ -8,7 +8,8 @@ namespace DoobesBackup.Service.Modules
     using System.Collections.Generic;
     using Domain;
     using Nancy;
-    
+    using Infrastructure;
+
     /// <summary>
     /// The sync configuration api endpoint
     /// </summary>

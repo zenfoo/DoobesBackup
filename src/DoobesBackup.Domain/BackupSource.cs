@@ -10,19 +10,17 @@ namespace DoobesBackup.Domain
     /// <summary>
     /// A backup source location
     /// </summary>
-    public class BackupSource : IAggregateRoot
+    public class BackupSource : Entity
     {
         /// <summary>
         /// Initializes a new instance of the BackupSource class
         /// </summary>
         /// <param name="name">The name of the backup source</param>
-        public BackupSource(Guid? id, string name)
+        public BackupSource(string name)
         {
-            this.Id = id;
             this.Name = name;
         }
-
-        public Guid? Id { get; private set; }
+        
 
         /// <summary>
         /// Gets the name for the backup source

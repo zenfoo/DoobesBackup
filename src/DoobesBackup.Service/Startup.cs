@@ -73,10 +73,10 @@ namespace DoobesBackup.Service
             // Setup database configuration
             DatabaseInitializer.Initialize();
 
-            //
-            // DEMO - Create a dummy configuration
-            //
-            syncConfigurationRepository.Create(new SyncConfiguration(null, 60, new BackupSource(null, "Synology NAS"), new BackupDestination(null, "AWS S3")));
+            ////
+            //// DEMO - Create a dummy configuration
+            ////
+            //syncConfigurationRepository.Create(new SyncConfiguration(null, 60, new BackupSource(null, "Synology NAS"), new BackupDestination(null, "AWS S3")));
             
             // Specify error message display
             if (env.IsDevelopment())

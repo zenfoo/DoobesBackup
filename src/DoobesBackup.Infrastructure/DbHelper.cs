@@ -8,6 +8,7 @@ namespace DoobesBackup.Infrastructure
     using Dapper;
     using Domain;
     using Microsoft.Data.Sqlite;
+    using PersistenceModels;
     using System;
     using System.Data;
     using System.Linq;
@@ -104,7 +105,7 @@ namespace DoobesBackup.Infrastructure
                             break;
                         case TypeCode.Object:
                             // We will store the id of the entity in this field (Guid format)
-                            if (typeof(IEntity).IsAssignableFrom(prop.PropertyType))
+                            if (typeof(PersistenceModel).IsAssignableFrom(prop.PropertyType))
                             {
                                 fieldType = "TEXT";
                                 name = prop.Name + "Id";

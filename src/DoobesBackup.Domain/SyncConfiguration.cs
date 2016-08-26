@@ -3,48 +3,90 @@
 //     Copyright (c) doobes.com. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-
 namespace DoobesBackup.Domain
 {
+    using System;
+    using System.Collections.Generic;
+    
     /// <summary>
     /// Configuration for syncing files from source to destination
     /// </summary>
-    public class SyncConfiguration : IAggregateRoot
+    public class SyncConfiguration : Entity
     {
-        /// <summary>
-        /// Initializes a new instance of the SyncConfiguration class
-        /// </summary>
-        /// <param name="id">The id assigned to this sync configuration</param>
-        /// <param name="intervalSeconds">The number of seconds interval between sync attempts</param>
-        /// <param name="source">The backup source</param>
-        /// <param name="destination">The backup destination</param>
-        public SyncConfiguration(Guid? id, int intervalSeconds, BackupSource source, BackupDestination destination)
+        public SyncConfiguration()
         {
-            this.Id = id;
-            this.IntervalSeconds = intervalSeconds;
-            this.Source = source;
-            this.Destination = destination;
+            this.IntervalSeconds = 30 * 60; // 30 minutes by default
+            this.Destinations = new List<BackupDestination>();
         }
-
-        /// <summary>
-        /// Gets the configuration id
-        /// </summary>
-        public Guid? Id { get; private set; }
 
         /// <summary>
         /// The number of seconds between sync executions
         /// </summary>
-        public int IntervalSeconds { get; private set; }
+        public virtual int IntervalSeconds { get; protected set; }
 
         /// <summary>
         /// Gets the backup source
         /// </summary>
-        public BackupSource Source { get; private set; }
+        public virtual BackupSource Source { get; protected set; }
 
         /// <summary>
         /// Gets the backup destination
         /// </summary>
-        public BackupDestination Destination { get; private set; }
+        public virtual IList<BackupDestination> Destinations { get; protected set; }
+        
+        /// <summary>
+        /// Set the backup source for this sync configuration
+        /// </summary>
+        /// <param name="source">The source to retrieve data from</param>
+        public void SetBackupSource(BackupSource source)
+        {
+            this.Source = source;
+        }
+
+        /// <summary>
+        /// Add the backup destination
+        /// </summary>
+        /// <param name="destination">The backup destination</param>
+        public void AddBackupDestination(BackupDestination destination)
+        {
+            if (this.Destinations.Contains(destination))
+            {
+                throw new DomainException("Backup destination already exists in this configuration!");
+            }
+
+            this.Destinations.Add(destination);
+        }
+
+        /// <summary>
+        /// Remove the backup destination
+        /// </summary>
+        /// <param name="destination">The backup destination</param>
+        public void RemoveBackupDestination(BackupDestination destination)
+        {
+            if (!this.Destinations.Contains(destination))
+            {
+                throw new DomainException("The backup destination does not exist in this configuration");
+            }
+
+            this.Destinations.Remove(destination);
+        }
+        
+        /// <summary>
+        /// Peform the backup operation
+        /// </summary>
+        public void PerformBackup()
+        {
+
+            // List the files on the source
+
+            // List the files on the destination
+
+            // Copy files from source to destination that are new
+
+            // 
+
+
+            throw new NotImplementedException();
+        }
     }
 }

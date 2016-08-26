@@ -1,11 +1,13 @@
 ﻿import { Injectable } from "@angular/core";
 import { HEROES } from "./mock-heroes";
 import { Hero } from "../models/hero.model";
+import { SyncConfiguration } from "../models/sync-configuration.model";
 
 import { Http, Response, Headers } from "@angular/http";
 import "rxjs/add/operator/map";
 import "rxjs/Rx";
-// import { Observable } from "rxjs/Observable";
+import { Observable } from "rxjs/Observable";
+
 // import { SyncConfiguration } from "../models/sync-configuration.model";
 import { AppConfiguration } from "../app-configuration";
 
@@ -29,6 +31,13 @@ export class SyncConfigurationService {
         return new Promise<Hero[]>((resolve: (value: Hero[]) => void) => {
             setTimeout(() => resolve(HEROES), 2000)
         });
+    }
+
+    getAllConfigurations(): Promise<SyncConfiguration[]> {
+        return this._http.get(this._configuration.ServerWithApiUrl + "/syncconfigurations")
+            .toPromise()
+            .then((response:Response) => response.json().data as SyncConfiguration[])
+            .catch(this.handleError);
     }
 
     /*
@@ -62,11 +71,11 @@ export class SyncConfigurationService {
         return this._http.delete(this.actionUrl + id)
             .catch(this.handleError);
     };
-
-    private handleError(error: Response) {
+    */
+    private handleError(error: Response): {} {
         console.error(error);
         return Observable.throw(error.json().error || "Server error");
-    };*/
+    };
 }
 
 interface ResolveCallback {

@@ -15,7 +15,9 @@ namespace DoobesBackup.Infrastructure
     /// Base implementation of the repository pattern using dapper
     /// </summary>
     /// <typeparam name="T">The base entity type the repository deals with</typeparam>
-    public abstract class Repository<T> : IRepository<T> where T : class, IAggregateRoot
+    public abstract class Repository<DM,PM> : IRepository<DM> 
+        where DM : class
+        where PM : class
     {
         protected readonly string TableName;
 
@@ -34,37 +36,15 @@ namespace DoobesBackup.Infrastructure
         }
 
         /// <inheritdoc />
-        public virtual void Delete(T entity)
-        {
-            using (var connection = DbHelper.GetDbConnection())
-            {
-                connection.Execute("delete from " + this.TableName + " where Id = @Id", new { Id = entity.Id });
-            }
-        }
+        public abstract bool Delete(DM entity);
 
         /// <inheritdoc />
-        public virtual T Get(Guid id)
-        {
-            using (var connection = DbHelper.GetDbConnection())
-            {
-                return connection.QueryFirst<T>("select * from " + this.TableName + " where Id = @Id", new { Id = id });
-            }
-        }
+        public abstract DM Get(Guid id);
 
         /// <inheritdoc />
-        public virtual IEnumerable<T> GetAll()
-        {
-            using (var connection = DbHelper.GetDbConnection())
-            {
-                return connection.Query<T>("select * from " + this.TableName);
-            }
-        }
+        public abstract IEnumerable<DM> GetAll();
 
         /// <inheritdoc />
-        public abstract bool Create(T entity);
-        
-        /// <inheritdoc />
-        public abstract bool Update(T entity);
-        
+        public abstract bool Save(DM entity);
     }
 }

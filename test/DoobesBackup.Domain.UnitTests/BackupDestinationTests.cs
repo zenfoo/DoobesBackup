@@ -18,7 +18,7 @@ namespace DoobesBackup.Domain.UnitTests
         [Fact]
         public void ConstructBackupSource_NameAppliedCorrectly()
         {
-            var backupSource = new BackupDestination(null, "Synology NAS");
+            var backupSource = new BackupDestination("Synology NAS");
             Assert.Equal("Synology NAS", backupSource.Name);
         }
     }

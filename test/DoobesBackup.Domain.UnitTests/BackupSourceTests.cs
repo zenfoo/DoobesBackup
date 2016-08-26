@@ -19,7 +19,7 @@ namespace DoobesBackup.Domain.UnitTests
         [Fact]
         public void ConstructBackupSource_NameAppliedCorrectly()
         {
-            var backupSource = new BackupSource(null, "Synology NAS");
+            var backupSource = new BackupSource("Synology NAS");
             Assert.Equal("Synology NAS", backupSource.Name);
         }
 
@@ -27,7 +27,7 @@ namespace DoobesBackup.Domain.UnitTests
         public void TestAssignmentOfTypeToEntity()
         {
             var backupSourceType = typeof(BackupSource);
-            Assert.True(typeof(IEntity).IsAssignableFrom(backupSourceType));
+            Assert.True(typeof(Entity).IsAssignableFrom(backupSourceType));
         }
 
     }

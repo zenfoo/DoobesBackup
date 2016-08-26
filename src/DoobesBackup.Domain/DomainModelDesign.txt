@@ -1,0 +1,28 @@
+﻿Entities:
+BackupSource, BackupDestination, BackupConfiguration, File
+
+Business rules:
+* BackupConfiguration describes a source and a one or more destinations to sync to (one-way at the moment)
+* Multiple configurations could exist
+
+BackupSource
+------------
+* List files
+* Read file
+
+BackupDestination
+-----------------
+* List files
+* Write file
+
+BackupConfiguration - aggregate root
+-------------------
+* Set backup source
+* Add backup destination
+* Remove backup destination
+* Perform backup (copy from source to dest)
+
+File
+----
+* Content
+* Modified date UTC

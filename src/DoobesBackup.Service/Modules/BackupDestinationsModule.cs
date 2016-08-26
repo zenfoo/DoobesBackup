@@ -8,7 +8,8 @@ namespace DoobesBackup.Service.Modules
     using System.Collections.Generic;
     using Domain;
     using Nancy;
-    
+    using Infrastructure;
+
     /// <summary>
     /// The backup destinations api endpoint
     /// </summary>
