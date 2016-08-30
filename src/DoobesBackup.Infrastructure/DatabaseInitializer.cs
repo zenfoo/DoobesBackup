@@ -5,15 +5,25 @@
 //-----------------------------------------------------------------------
 namespace DoobesBackup.Infrastructure
 {
-    using DoobesBackup.Domain;
+    using PersistenceModels;
 
     public static class DatabaseInitializer
     {
         public static void Initialize()
         {
-            if (!DbHelper.TableExists("SyncConfiguration"))
+            if (!DbHelper.TableExists("SyncConfigurations"))
             {
-                DbHelper.CreateTable(typeof(SyncConfiguration));
+                DbHelper.CreateTable("SyncConfigurations", typeof(SyncConfigurationPM));
+            }
+
+            if (!DbHelper.TableExists("BackupSources"))
+            {
+                DbHelper.CreateTable("BackupSources", typeof(BackupSourcePM));
+            }
+
+            if (!DbHelper.TableExists("BackupDestinations"))
+            {
+                DbHelper.CreateTable("BackupDestinations", typeof(BackupDestinationPM));
             }
         }
     }

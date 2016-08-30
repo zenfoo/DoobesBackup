@@ -10,13 +10,24 @@ namespace DoobesBackup.Domain.UnitTests
     using Nancy;
     using Nancy.Testing;
     using Service.Modules;
+    using System;
     using Xunit;
 
     /// <summary>
     /// Tests for the BackupSource class
     /// </summary>
-    public class SyncConfigurationsModuleTests
+    public class SyncConfigurationsModuleTests : IDisposable
     {
+
+        public SyncConfigurationsModuleTests()
+        {
+            DoobesBackup.Framework.GlobalConfigurator.Configure();
+        }
+
+        public void Dispose()
+        {
+        }
+
         /// <summary>
         /// Test the name property is assigned correctly
         /// </summary>

@@ -2,10 +2,19 @@
 {
     using System;
 
-    public abstract class File : Entity
+    /// <summary>
+    /// Describes a file to be synchronised
+    /// </summary>
+    public class File : Entity
     {
-        public virtual string Name { get; protected set; }
-        public virtual DateTime LastModifiedUtc { get; protected set; }
-        public virtual string Path { get; protected set; }
+        public string Name { get; protected set; }
+        public DateTime LastModifiedUtc { get; protected set; }
+        public string Path { get; protected set; }
+        public File(string name, DateTime lastModifiedUtc, string path)
+        {
+            this.Name = name;
+            this.LastModifiedUtc = lastModifiedUtc;
+            this.Path = path;
+        }
     }
 }

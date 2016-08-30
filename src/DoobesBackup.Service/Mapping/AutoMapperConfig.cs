@@ -1,7 +1,7 @@
-﻿namespace DoobesBackup.Infrastructure.Mapping
+﻿namespace DoobesBackup.Service.Mapping
 {
     using AutoMapper;
-    using Framework;
+    using DoobesBackup.Framework;
 
     public class AutoMapperConfig : IGlobalConfiguration
     {

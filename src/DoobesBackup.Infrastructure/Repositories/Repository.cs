@@ -36,7 +36,7 @@ namespace DoobesBackup.Infrastructure
         }
 
         /// <inheritdoc />
-        public abstract bool Delete(DM entity);
+        public abstract bool Delete(Guid id);
 
         /// <inheritdoc />
         public abstract DM Get(Guid id);

@@ -5,6 +5,9 @@
 //-----------------------------------------------------------------------
 namespace DoobesBackup.Domain.UnitTests
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using Xunit;
 
     /// <summary>
@@ -12,14 +15,11 @@ namespace DoobesBackup.Domain.UnitTests
     /// </summary>
     public class BackupDestinationTests
     {
-        /// <summary>
-        /// Test the name property is assigned correctly
-        /// </summary>
         [Fact]
-        public void ConstructBackupSource_NameAppliedCorrectly()
+        public void ConstructBackupDestination_NameAppliedCorrectly()
         {
-            var backupSource = new BackupDestination("Synology NAS");
-            Assert.Equal("Synology NAS", backupSource.Name);
+            var backupDestination = new BackupDestination("Synology NAS", "FileTarget");
+            Assert.Equal("Synology NAS", backupDestination.Name);
         }
     }
 }

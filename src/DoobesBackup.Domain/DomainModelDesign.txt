@@ -26,3 +26,10 @@ File
 ----
 * Content
 * Modified date UTC
+
+
+
+Busines Rules
+-------------
+
+* Overall a backup destination should not have multiple sources to avoid overwriting from one source to another, or the destination should uniquely identify the source to keep the data separated

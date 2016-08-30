@@ -7,6 +7,7 @@ namespace DoobesBackup.Service
 {
     using Domain;
     using DoobesBackup.Service.Configuration;
+    using Framework;
     using Infrastructure;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -48,7 +49,6 @@ namespace DoobesBackup.Service
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<ISyncConfigurationRepository, SyncConfigurationRepository>();
-            services.AddScoped<IBackupDestinationRepository, BackupDestinationRepository>();
             services.AddSingleton(services);
         }
 
@@ -69,9 +69,12 @@ namespace DoobesBackup.Service
             loggerFactory.AddConsole(this.Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
             
-
             // Setup database configuration
             DatabaseInitializer.Initialize();
+
+            // Setup any other global configuration objects that implement IGlobalConfiguration
+            GlobalConfigurator.Configure();
+
 
             ////
             //// DEMO - Create a dummy configuration

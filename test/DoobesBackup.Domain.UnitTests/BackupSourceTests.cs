@@ -5,9 +5,10 @@
 //-----------------------------------------------------------------------
 namespace DoobesBackup.Domain.UnitTests
 {
+    using System.Linq;
     using System.Reflection;
     using Xunit;
-    
+
     /// <summary>
     /// Tests for the BackupSource class
     /// </summary>
@@ -19,16 +20,8 @@ namespace DoobesBackup.Domain.UnitTests
         [Fact]
         public void ConstructBackupSource_NameAppliedCorrectly()
         {
-            var backupSource = new BackupSource("Synology NAS");
+            var backupSource = new BackupSource("Synology NAS", "FileTarget");
             Assert.Equal("Synology NAS", backupSource.Name);
         }
-
-        [Fact]
-        public void TestAssignmentOfTypeToEntity()
-        {
-            var backupSourceType = typeof(BackupSource);
-            Assert.True(typeof(Entity).IsAssignableFrom(backupSourceType));
-        }
-
     }
 }

@@ -6,7 +6,6 @@
 namespace DoobesBackup.Infrastructure
 {
     using Dapper;
-    using Domain;
     using Microsoft.Data.Sqlite;
     using PersistenceModels;
     using System;
@@ -51,11 +50,11 @@ namespace DoobesBackup.Infrastructure
         /// Create a table that maps to the type specified
         /// </summary>
         /// <param name="entityType">The object type to create</param>
-        public static void CreateTable(Type entityType)
+        public static void CreateTable(string tableName, Type entityType)
         {
             var properties = entityType.GetProperties();
             var sb = new StringBuilder();
-            sb.Append("CREATE TABLE " + entityType.Name + "(");
+            sb.Append("CREATE TABLE " + tableName + "(");
 
             for (var ii = 0; ii < properties.Length; ii++)
             {

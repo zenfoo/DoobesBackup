@@ -16,7 +16,7 @@ namespace DoobesBackup.Infrastructure
     /// </summary>
     public class SyncConfigurationRepository : Repository<SyncConfiguration, SyncConfigurationPM>, ISyncConfigurationRepository
     {
-        public SyncConfigurationRepository() : base("SyncConfiguration") { }
+        public SyncConfigurationRepository() : base("SyncConfigurations") { }
 
         /// <inheritdoc />
         public override SyncConfiguration Get(Guid id)
@@ -98,7 +98,7 @@ insert into {this.TableName} (
         }
 
         /// <inheritdoc />
-        public override bool Delete(SyncConfiguration entity)
+        public override bool Delete(Guid id)
         {
             using (var connection = DbHelper.GetDbConnection())
             {
@@ -108,7 +108,7 @@ delete from
 where 
     Id = @Id
 ";
-                var result = connection.Execute(query, entity);
+                var result = connection.Execute(query, new { Id = id });
                 return result == 1;
             }
         }

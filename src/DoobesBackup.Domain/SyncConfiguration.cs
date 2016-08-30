@@ -7,17 +7,27 @@ namespace DoobesBackup.Domain
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Collections.ObjectModel;
+    using System.Linq;
+
     /// <summary>
     /// Configuration for syncing files from source to destination
     /// </summary>
     public class SyncConfiguration : Entity
     {
-        public SyncConfiguration()
+        private Collection<BackupDestination> destinations;
+
+        public SyncConfiguration(string name) : this(name, 30 * 60) { }
+
+        public SyncConfiguration(string name, int intervalSeconds)
         {
-            this.IntervalSeconds = 30 * 60; // 30 minutes by default
-            this.Destinations = new List<BackupDestination>();
+            this.Name = name;
+            this.IntervalSeconds = intervalSeconds;
+            this.Source = null;
+            this.destinations = new Collection<BackupDestination>();
         }
+
+        public virtual string Name { get; private set; }
 
         /// <summary>
         /// The number of seconds between sync executions
@@ -30,9 +40,15 @@ namespace DoobesBackup.Domain
         public virtual BackupSource Source { get; protected set; }
 
         /// <summary>
-        /// Gets the backup destination
+        /// Gets the backup destinations
         /// </summary>
-        public virtual IList<BackupDestination> Destinations { get; protected set; }
+        public ReadOnlyCollection<BackupDestination> Destinations
+        {
+            get
+            {
+                return new ReadOnlyCollection<BackupDestination>(this.destinations);
+            }
+        }
         
         /// <summary>
         /// Set the backup source for this sync configuration
@@ -49,12 +65,12 @@ namespace DoobesBackup.Domain
         /// <param name="destination">The backup destination</param>
         public void AddBackupDestination(BackupDestination destination)
         {
-            if (this.Destinations.Contains(destination))
+            if (this.destinations.Contains(destination))
             {
                 throw new DomainException("Backup destination already exists in this configuration!");
             }
 
-            this.Destinations.Add(destination);
+            this.destinations.Add(destination);
         }
 
         /// <summary>
@@ -63,27 +79,27 @@ namespace DoobesBackup.Domain
         /// <param name="destination">The backup destination</param>
         public void RemoveBackupDestination(BackupDestination destination)
         {
-            if (!this.Destinations.Contains(destination))
+            if (!this.destinations.Contains(destination))
             {
                 throw new DomainException("The backup destination does not exist in this configuration");
             }
 
-            this.Destinations.Remove(destination);
+            this.destinations.Remove(destination);
         }
         
         /// <summary>
-        /// Peform the backup operation
+        /// Analyse the backup operations required
+        /// TODO: this may need to be moved out to a domain service
         /// </summary>
-        public void PerformBackup()
+        public ReadOnlyCollection<SyncAction> GetSyncActions()
         {
-
             // List the files on the source
 
             // List the files on the destination
 
-            // Copy files from source to destination that are new
+            // Determine the correct action to take for each file on the source (copy, update or leave)
 
-            // 
+            // Determine the correct action to take for each file on the destination (update, delete or leave)
 
 
             throw new NotImplementedException();

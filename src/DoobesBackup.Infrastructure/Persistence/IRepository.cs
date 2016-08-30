@@ -40,6 +40,6 @@ namespace DoobesBackup.Domain
         /// </summary>
         /// <param name="entity">The entity to delete</param>
         /// <returns>Boolean value indicating whether or not the operation succeeded</returns>
-        bool Delete(DM entity);
+        bool Delete(Guid id);
     }
 }
