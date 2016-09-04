@@ -3,6 +3,7 @@
 //     Copyright (c) doobes.com. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -21,4 +22,4 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("3d41313d-911b-46ca-8a7b-3276d9b8b881")]
+//[assembly: Guid("3d41313d-911b-46ca-8a7b-3276d9b8b881")]

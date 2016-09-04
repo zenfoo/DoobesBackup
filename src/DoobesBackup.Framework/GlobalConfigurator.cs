@@ -7,7 +7,7 @@
     using System.Collections.Generic;
     using System.Diagnostics;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.AspNetCore.Hosting;
+    //using Microsoft.AspNetCore.Hosting;
 
     /// <summary>
     /// Discover all the IGlobalConfiguration implementations across the application
