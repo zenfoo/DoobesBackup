@@ -1,3 +1,3 @@
-[submodule "lib/Nancy"]
-	path = lib/Nancy
-	url = https://github.com/zenfoo/Nancy.git
+#[submodule "lib/Nancy"]
+#	path = lib/Nancy
+#	url = https://github.com/zenfoo/Nancy.git
