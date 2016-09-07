@@ -9,8 +9,9 @@ namespace DoobesBackup.Infrastructure
     using Microsoft.Data.Sqlite;
     using PersistenceModels;
     using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Data;
-    using System.Linq;
     using System.Reflection;
     using System.Text;
 
@@ -26,12 +27,11 @@ namespace DoobesBackup.Infrastructure
         /// <returns>The database connection</returns>
         public static IDbConnection GetDbConnection()
         {
-            //var connection = new SqliteConnection("Data Source=:memory:");
             var connection = new SqliteConnection("Data Source=data.db");
             connection.Open();
             return connection;
         }
-
+        
         /// <summary>
         /// Determine if a table exists in the data store
         /// </summary>
@@ -39,9 +39,9 @@ namespace DoobesBackup.Infrastructure
         /// <returns>Boolean value indicating whether the table exists or not</returns>
         public static bool TableExists(string tableName)
         {
-            using (var connection = DbHelper.GetDbConnection())
+            using (var db = DbHelper.GetDbConnection())
             {
-                var count = connection.ExecuteScalar<int>("SELECT count(*) FROM sqlite_master WHERE type='table' AND name=@TableName;", new { TableName = tableName });
+                var count = db.ExecuteScalar<int>("SELECT count(*) FROM sqlite_master WHERE type='table' AND name=@TableName;", new { TableName = tableName });
                 return count > 0;
             }
         }
@@ -52,30 +52,57 @@ namespace DoobesBackup.Infrastructure
         /// <param name="entityType">The object type to create</param>
         public static void CreateTable(string tableName, Type entityType)
         {
-            var properties = entityType.GetProperties();
+            var columns = DbHelper.GetColumnsForType(entityType);
             var sb = new StringBuilder();
             sb.Append("CREATE TABLE " + tableName + "(");
+            var ii = 0;
+            foreach (var column in columns)
+            {
+                sb.Append(
+                    string.Format("{0} {1} {2} {3}",
+                    ii > 0 ? "," : string.Empty,
+                    column.Name,
+                    column.Type.ToString(),
+                    column.IsPrimaryKey ? "PRIMARY KEY" : string.Empty));
+                ii++;
+            }
 
+            sb.Append(");");
+            using (var db = DbHelper.GetDbConnection())
+            {
+                var result = db.Execute(sb.ToString());
+            }
+        }
+
+        public static IEnumerable<Column> GetColumnsForType<T>() where T : Domain.Entity
+        {
+            return DbHelper.GetColumnsForType(typeof(T));
+        }
+
+        public static IEnumerable<Column> GetColumnsForType(Type entityType)
+        {
+            var columns = new Collection<Column>();
+            var properties = entityType.GetProperties();
             for (var ii = 0; ii < properties.Length; ii++)
             {
                 var prop = properties[ii];
-                
+
                 // Map properties to fields
                 if (prop.Name.ToLowerInvariant() == "id")
                 {
-                    // Add comma between each field declaration
-                    if (ii > 0)
+                    columns.Add(new Column()
                     {
-                        sb.Append(",");
-                    }
-
-                    // Expect id to be a guid
-                    sb.Append("Id TEXT PRIMARY KEY");
-                    
-                } else {
+                        Name = "Id",
+                        Type = ColumnType.TEXT,
+                        IsPrimaryKey = true
+                    });
+                }
+                else
+                {
                     // Detect the type of the property down to one of TEXT, NUMERIC, INTEGER, REAL
-                    var fieldType = "";
+                    var fieldType = ColumnType.UNKNOWN;
                     var typeCode = Type.GetTypeCode(prop.PropertyType);
+                    var foreignKey = false;
                     var name = prop.Name;
                     switch (typeCode)
                     {
@@ -87,49 +114,46 @@ namespace DoobesBackup.Infrastructure
                         case TypeCode.UInt16:
                         case TypeCode.UInt32:
                         case TypeCode.UInt64:
-                            fieldType = "INTEGER";
+                            fieldType = ColumnType.INTEGER;
                             break;
                         case TypeCode.Char:
                         case TypeCode.String:
-                            fieldType = "TEXT";
+                            fieldType = ColumnType.TEXT;
                             break;
                         case TypeCode.Double:
                         case TypeCode.Single:
-                            fieldType = "REAL";
+                            fieldType = ColumnType.REAL;
                             break;
                         case TypeCode.Boolean:
                         case TypeCode.DateTime:
                         case TypeCode.Decimal:
-                            fieldType = "NUMERIC";
+                            fieldType = ColumnType.NUMERIC;
                             break;
                         case TypeCode.Object:
                             // We will store the id of the entity in this field (Guid format)
                             if (typeof(PersistenceModel).IsAssignableFrom(prop.PropertyType))
                             {
-                                fieldType = "TEXT";
+                                fieldType = ColumnType.TEXT;
+                                foreignKey = true;
                                 name = prop.Name + "Id";
                             }
                             break;
                     }
-                    
-                    if (!string.IsNullOrEmpty(fieldType))
-                    {
-                        // Add comma between each field declaration
-                        if (ii > 0)
-                        {
-                            sb.Append(",");
-                        }
 
-                        sb.Append(name + " " + fieldType);
+                    if (fieldType != ColumnType.UNKNOWN)
+                    {
+                        columns.Add(new Column()
+                        {
+                            Name = name,
+                            Type = fieldType,
+                            IsPrimaryKey = false,
+                            IsForeignKey = foreignKey
+                        });
                     }
                 }
             }
-            sb.Append(");");
-
-            using (var connection = DbHelper.GetDbConnection())
-            {
-                var result = connection.Execute(sb.ToString());
-            }
+            
+            return columns;
         }
-     }
+    }
 }

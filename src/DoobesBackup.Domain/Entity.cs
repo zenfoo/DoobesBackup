@@ -12,6 +12,23 @@ namespace DoobesBackup.Domain
     /// </summary>
     public abstract class Entity
     {
+        /// <summary>
+        /// The unique id for the domain entity - if null, the entity is transient and has not been saved to persistent storage
+        /// </summary>
         public virtual Guid? Id { get; protected set; }
+
+        /// <summary>
+        /// Set the id for the domain entity
+        /// </summary>
+        /// <param name="id">The unique id for this entity</param>
+        public virtual void SetId(Guid id)
+        {
+            if (this.Id.HasValue)
+            {
+                throw new DomainException("The entity already has an id");
+            }
+
+            this.Id = id;
+        }
     }
 }

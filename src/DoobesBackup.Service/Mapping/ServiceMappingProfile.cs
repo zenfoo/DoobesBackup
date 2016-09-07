@@ -4,9 +4,9 @@
     using Domain;
     using ResourceModels;
 
-    public class AutoMapperMainProfile : Profile
+    public class ServiceMappingProfile : Profile
     {
-        public AutoMapperMainProfile()
+        public ServiceMappingProfile()
         {
             CreateMap<SyncConfiguration, SyncConfigurationRM>();
             CreateMap<SyncConfigurationRM, SyncConfiguration>()

@@ -4,9 +4,9 @@
     using Domain;
     using PersistenceModels;
 
-    public class AutoMapperMainProfile : Profile
+    public class InfrastructureMappingProfile : Profile
     {
-        public AutoMapperMainProfile()
+        public InfrastructureMappingProfile()
         {
             CreateMap<SyncConfiguration, SyncConfigurationPM>();
             CreateMap<SyncConfigurationPM, SyncConfiguration>()

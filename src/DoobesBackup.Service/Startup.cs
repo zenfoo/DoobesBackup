@@ -5,7 +5,6 @@
 //-----------------------------------------------------------------------
 namespace DoobesBackup.Service
 {
-    using Domain;
     using DoobesBackup.Service.Configuration;
     using Framework;
     using Infrastructure;
@@ -15,7 +14,7 @@ namespace DoobesBackup.Service
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Nancy.Owin;
-    using System;
+    using NancyConfig;
 
     /// <summary>
     /// The startup class for the service
@@ -48,8 +47,7 @@ namespace DoobesBackup.Service
         /// <param name="services">The current services collection</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<ISyncConfigurationRepository, SyncConfigurationRepository>();
-            services.AddSingleton(services);
+            //services.AddSingleton(services);
         }
 
         /// <summary>
@@ -61,9 +59,8 @@ namespace DoobesBackup.Service
         public void Configure(
             IApplicationBuilder app, 
             IHostingEnvironment env, 
-            ILoggerFactory loggerFactory, 
-            ISyncConfigurationRepository syncConfigurationRepository,
-            IServiceCollection services)
+            ILoggerFactory loggerFactory)/*,
+            IServiceCollection services)*/
         {
             // Initialise logging
             loggerFactory.AddConsole(this.Configuration.GetSection("Logging"));
@@ -74,12 +71,6 @@ namespace DoobesBackup.Service
 
             // Setup any other global configuration objects that implement IGlobalConfiguration
             GlobalConfigurator.Configure();
-
-
-            ////
-            //// DEMO - Create a dummy configuration
-            ////
-            //syncConfigurationRepository.Create(new SyncConfiguration(null, 60, new BackupSource(null, "Synology NAS"), new BackupDestination(null, "AWS S3")));
             
             // Specify error message display
             if (env.IsDevelopment())
@@ -91,7 +82,7 @@ namespace DoobesBackup.Service
                 app.UseExceptionHandler("/Home/Error");
             }
             
-            // Map application configuration
+            // Bind application configuration from json appsettings.json
             var config = this.Configuration;
             var appConfig = new AppConfiguration();
             ConfigurationBinder.Bind(config, appConfig);
@@ -99,7 +90,7 @@ namespace DoobesBackup.Service
             // Wire up nancy
             app.UseOwin(x => 
                 x.UseNancy(opt => 
-                    opt.Bootstrapper = new NancyBootstrapper(appConfig, services, app.ApplicationServices)));
+                    opt.Bootstrapper = new NancyBootstrapper()));
         }
     }
 }

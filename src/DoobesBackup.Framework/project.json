@@ -2,7 +2,8 @@
   "version": "1.0.0-*",
   "dependencies": {
     "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0",
-    "Microsoft.Extensions.DependencyModel": "1.0.0"
+    "Microsoft.Extensions.DependencyModel": "1.0.0",
+    "AutoMapper": "5.1.1"
   },
   "frameworks": {
     "netstandard1.6": {}

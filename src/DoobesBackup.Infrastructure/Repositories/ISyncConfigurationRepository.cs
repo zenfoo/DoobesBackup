@@ -1,14 +1,9 @@
-﻿using DoobesBackup.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DoobesBackup.Infrastructure
+﻿namespace DoobesBackup.Infrastructure
 {
+    using DoobesBackup.Domain;
+    using DoobesBackup.Infrastructure.Repositories;
+
     public interface ISyncConfigurationRepository : IRepository<SyncConfiguration>
     {
-        
     }
 }

@@ -3,7 +3,7 @@
 //     Copyright (c) doobes.com. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace DoobesBackup.Domain
+namespace DoobesBackup.Infrastructure.Repositories
 {
     using System;
     using System.Collections.Generic;

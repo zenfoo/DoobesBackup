@@ -17,99 +17,26 @@ namespace DoobesBackup.Infrastructure
     public class SyncConfigurationRepository : Repository<SyncConfiguration, SyncConfigurationPM>, ISyncConfigurationRepository
     {
         public SyncConfigurationRepository() : base("SyncConfigurations") { }
-
-        /// <inheritdoc />
-        public override SyncConfiguration Get(Guid id)
-        {
-            using (var connection = DbHelper.GetDbConnection())
-            {
-                var query = $@"
-select 
-    * 
-from 
-    {this.TableName}
-where 
-    Id = @Id
-";
-                var result = connection.QueryFirst<SyncConfigurationPM>(query, new { Id = id });
-                return AutoMapper.Mapper.Map<SyncConfiguration>(result);
-            }
-        }
-
-        /// <inheritdoc />
-        public override IEnumerable<SyncConfiguration> GetAll()
-        {
-            using (var connection = DbHelper.GetDbConnection())
-            {
-                var query = $@"
-select 
-    * 
-from
-    {this.TableName}
-";
-                var results = connection.Query<SyncConfigurationPM>(query);
-                
-                return AutoMapper.Mapper.Map<IEnumerable<SyncConfiguration>>(results);
-            }
-        }
-
-        /// <inheritdoc />
+        
         public override bool Save(SyncConfiguration entity)
         {
-            // Map to persistence model
-            var pm = AutoMapper.Mapper.Map<SyncConfigurationPM>(entity);
-
-            // Insert or update depending on id assignment
-            using (var connection = DbHelper.GetDbConnection())
+            using (var db = this.GetDb(true))
             {
-                if (pm.Id.HasValue)
-                {
+                var result = base.Save(entity);
+                
+                // Insert each destination record
 
-                    var query = $@"
-update  
-    {this.TableName} 
-set     
-    IntervalSeconds = @IntervalSeconds, 
-    SourceId = @SourceId, 
-    DestinationId = @DestinationId 
-where   
-    Id = @Id";
-                    var result = connection.Execute(query, pm);
-                    return result > 0;
+                // Commit or rollback transaction
+                if (result)
+                {
+                    db.Commit();
                 }
                 else
                 {
-                    var query = $@"
-insert into {this.TableName} (
-    Id, 
-    IntervalSeconds, 
-    SourceId, 
-    DestinationId
-) values (
-    @Id, 
-    @IntervalSeconds, 
-    @SourceId, 
-    @DestinationId
-)";
-                    var result = connection.Execute(query, pm);
-                    return result > 0;
+                    // It will rollback automatically
                 }
-            }
-        }
 
-        /// <inheritdoc />
-        public override bool Delete(Guid id)
-        {
-            using (var connection = DbHelper.GetDbConnection())
-            {
-                var query = $@"
-delete from 
-    {this.TableName}
-where 
-    Id = @Id
-";
-                var result = connection.Execute(query, new { Id = id });
-                return result == 1;
+                return result;
             }
         }
     }

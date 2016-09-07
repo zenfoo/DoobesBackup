@@ -1,22 +1,22 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AutoMapperConfigTests.cs" company="doobes.com">
+// <copyright file="GlobalAutoMapperConfigTests.cs" company="doobes.com">
 //     Copyright (c) doobes.com. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
 namespace DoobesBackup.Service.UnitTests
 {
-    using Service.Mapping;
+    using Framework;
     using Xunit;
 
     /// <summary>
     /// Tests for the AutoMapperConfig class
     /// </summary>
-    public class AutoMapperConfigTests
+    public class GlobalAutoMapperConfigTests
     {
         [Fact]
         public void AutoMapperConfig_VerifyConfiguration()
         {
-            var config = new AutoMapperConfig();
+            var config = new GlobalAutoMapperConfig();
             config.Configure();
         }
     }
