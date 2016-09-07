@@ -39,6 +39,16 @@ namespace DoobesBackup.Infrastructure
             this.TableName = tableName;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the Repository class and accepts an existing DbConnectionWrapper
+        /// </summary>
+        /// <param name="tableName">The name of the database table</param>
+        /// <param name="wrapper">The db connection wrapper object</param>
+        public Repository(string tableName, DbConnectionWrapper wrapper) : this(tableName)
+        {
+            this.Db = wrapper;
+        }
+
         public virtual DM Get(Guid id)
         {
             using (var db = this.GetDb())

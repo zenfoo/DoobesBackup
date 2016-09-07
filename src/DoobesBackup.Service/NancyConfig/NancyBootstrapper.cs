@@ -13,6 +13,7 @@ namespace DoobesBackup.Service.NancyConfig
     using Nancy.Validation;
     using SimpleInjector.Extensions.ExecutionContextScoping;
     using Infrastructure;
+    using Infrastructure.Repositories;
 
     /// <summary>
     /// Bootstrap the nancy framework

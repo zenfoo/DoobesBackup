@@ -3,7 +3,7 @@
 //     Copyright (c) doobes.com. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace DoobesBackup.Infrastructure
+namespace DoobesBackup.Infrastructure.Repositories
 {
     using System;
     using Dapper;
@@ -23,8 +23,17 @@ namespace DoobesBackup.Infrastructure
             using (var db = this.GetDb(true))
             {
                 var result = base.Save(entity);
-                
+
+                // Insert the backup source
+                var backupSourceRepo = new BackupSourceRepository(db);
+                backupSourceRepo.Save(entity.Source);
+
                 // Insert each destination record
+                var backupDestinationRepo = new BackupDestinationRepository(db);
+                foreach(var destination in entity.Destinations)
+                {
+                    backupDestinationRepo.Save(destination);
+                }
 
                 // Commit or rollback transaction
                 if (result)
