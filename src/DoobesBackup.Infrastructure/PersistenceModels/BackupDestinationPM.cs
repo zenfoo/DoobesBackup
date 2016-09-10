@@ -13,6 +13,11 @@ namespace DoobesBackup.Infrastructure.PersistenceModels
     public class BackupDestinationPM : PersistenceModel
     {
         /// <summary>
+        /// The parent sync configuration
+        /// </summary>
+        public SyncConfigurationPM Parent { get; set; }
+
+        /// <summary>
         /// Gets or sets the name for the backup destination
         /// </summary>
         public string Name { get; set; }

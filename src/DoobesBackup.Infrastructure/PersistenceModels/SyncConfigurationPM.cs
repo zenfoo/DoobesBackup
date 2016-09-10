@@ -7,6 +7,7 @@
     {
         public virtual int IntervalSeconds { get; set; }
         public virtual string Name { get; set; }
+        [Relationship(false)]
         public virtual BackupSourcePM Source { get; set; }
         public virtual Collection<BackupDestinationPM> Destinations { get; set; }
     }

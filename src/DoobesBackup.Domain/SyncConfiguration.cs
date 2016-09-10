@@ -42,7 +42,7 @@ namespace DoobesBackup.Domain
         /// <summary>
         /// Gets the backup destinations
         /// </summary>
-        public ReadOnlyCollection<BackupDestination> Destinations
+        public virtual ReadOnlyCollection<BackupDestination> Destinations
         {
             get
             {

@@ -18,25 +18,19 @@ namespace DoobesBackup.Infrastructure
     /// Base implementation of the repository pattern using dapper
     /// </summary>
     /// <typeparam name="T">The base entity type the repository deals with</typeparam>
-    public abstract class Repository<DM,PM> : IRepository<DM> 
+    public abstract class Repository<DM,PM> : PersistenceRepository<PM>, IRepository<DM> 
         where DM : Entity
         where PM : PersistenceModel
     {
-        protected readonly string TableName;
-        private DbConnectionWrapper Db = null;
+        //protected readonly string TableName;
+        protected DbConnectionWrapper Db = null;
 
         /// <summary>
         /// Initializes a new instance of the Repository class
         /// </summary>
         /// <param name="tableName"></param>
-        public Repository(string tableName)
+        public Repository(string tableName) : base(tableName)
         {
-            if (string.IsNullOrEmpty(tableName))
-            {
-                throw new ArgumentException("The table name specified is not valid", "tableName");
-            }
-
-            this.TableName = tableName;
         }
 
         /// <summary>
@@ -44,168 +38,213 @@ namespace DoobesBackup.Infrastructure
         /// </summary>
         /// <param name="tableName">The name of the database table</param>
         /// <param name="wrapper">The db connection wrapper object</param>
-        public Repository(string tableName, DbConnectionWrapper wrapper) : this(tableName)
+        public Repository(
+            string tableName, 
+            DbConnectionWrapper wrapper) : base(tableName, wrapper)
         {
-            this.Db = wrapper;
         }
 
-        public virtual DM Get(Guid id)
+        public new virtual DM Get(Guid id)
         {
-            using (var db = this.GetDb())
-            {
-                var query = $@"
-select 
-    * 
-from 
-    {this.TableName}
-where 
-    Id = @Id
-";
-                var result = db.Connection.QueryFirst<PM>(query, new { Id = id });
-                return AutoMapper.Mapper.Map<DM>(result);
-            }
+            var pm = this.GetPM(id);
+            return AutoMapper.Mapper.Map<DM>(pm);
+
+            //            using (var db = this.GetDb())
+            //            {
+            //                var query = $@"
+            //select 
+            //    * 
+            //from 
+            //    {this.TableName}
+            //where 
+            //    Id = @Id
+            //";
+            //                var result = db.Connection.QueryFirst<PM>(query, new { Id = id });
+            //                return AutoMapper.Mapper.Map<DM>(result);
+            //            }
         }
         
-        public virtual IEnumerable<DM> GetAll()
+        public new virtual IEnumerable<DM> GetAll()
         {
-            using (var db = this.GetDb())
-            {
-                var query = $@"
-select 
-    * 
-from
-    {this.TableName}
-";
-                var results = db.Connection.Query<PM>(query);
+            var pms = this.GetAllPM();
+            return AutoMapper.Mapper.Map<IEnumerable<DM>>(pms);
 
-                return AutoMapper.Mapper.Map<IEnumerable<DM>>(results);
-            }
+            //            using (var db = this.GetDb())
+            //            {
+            //                var query = $@"
+            //select 
+            //    * 
+            //from
+            //    {this.TableName}
+            //";
+            //                var results = db.Connection.Query<PM>(query);
+
+            //                return AutoMapper.Mapper.Map<IEnumerable<DM>>(results);
+            //            }
         }
         
         public virtual bool Save(DM entity)
         {
             // Map to persistence model
             var pm = AutoMapper.Mapper.Map<PM>(entity);
-
-            var columns = DbHelper.GetColumnsForType<DM>();
-
-            // Insert or update depending on id assignment
-            using (var db = this.GetDb())
+            var success = this.SavePM(pm);
+            if (success)
             {
-                string query = null;
-                bool isUpdate = pm.Id.HasValue;
-
-                // Perform the update or insert
-                if (isUpdate)
-                {
-                    query = this.GetUpdateQuery();
-                }
-                else
-                {
-                    // Generate the Id for a new record
-                    pm.Id = Guid.NewGuid();
-                    query = this.GetInsertQuery();
-                }
-
-                // Execute the query
-                var result = db.Connection.Execute(query, pm);
-                if (result > 0)
-                {
-                    if (!isUpdate)
-                    {
-                        // Hydrate entity with newly created id
-                        entity.SetId(pm.Id.Value);
-                    }
-                    return true;
-                }
-
-                return false;
+                entity.SetId(pm.Id.Value);
             }
+            return success;
+
+
+            //var columns = DbHelper.GetColumnsForType<PM>();
+
+            //// Insert or update depending on id assignment
+            //using (var db = this.GetDb())
+            //{
+            //    string query = null;
+            //    bool isUpdate = pm.Id.HasValue;
+
+            //    // Perform the update or insert
+            //    if (isUpdate)
+            //    {
+            //        query = this.GetUpdateQuery();
+            //    }
+            //    else
+            //    {
+            //        // Generate the Id for a new record
+            //        pm.Id = Guid.NewGuid();
+            //        query = this.GetInsertQuery();
+            //    }
+
+            //    // Execute the query
+            //    var result = db.Connection.Execute(query, pm);
+            //    if (result > 0)
+            //    {
+            //        if (!isUpdate)
+            //        {
+            //            // Hydrate entity with newly created id
+            //            entity.SetId(pm.Id.Value);
+            //        }
+            //        return true;
+            //    }
+
+            //    return false;
+            //}
         }
 
-        public virtual bool Delete(Guid id)
+        public new virtual bool Delete(Guid id)
         {
-            using (var db = this.GetDb())
-            {
-                var query = $@"
-delete from 
-    {this.TableName}
-where 
-    Id = @Id
-";
-                var result = db.Connection.Execute(query, new { Id = id });
-                return result == 1;
-            }
+            return base.Delete(id);
+
+            //            using (var db = this.GetDb())
+            //            {
+            //                var query = $@"
+            //delete from 
+            //    {this.TableName}
+            //where 
+            //    Id = @Id
+            //";
+            //                var result = db.Connection.Execute(query, new { Id = id });
+            //                return result == 1;
+            //            }
         }
         
-        protected DbConnectionWrapper GetDb(bool startTransaction = false)
+        //protected DbConnectionWrapper GetDb(bool startTransaction = false)
+        //{
+        //    if (this.Db == null || this.Db.IsDisposed)
+        //    {
+        //        var connection = DbHelper.GetDbConnection();
+        //        var wrapper = new DbConnectionWrapper(connection);
+        //        if (startTransaction)
+        //        {
+        //            wrapper.StartTransaction();
+        //        }
+
+        //        this.Db = wrapper;
+        //    }
+
+        //    this.Db.AddNestLevel();
+        //    return this.Db;
+        //}
+
+//        private string GetUpdateQuery()
+//        {
+//            var columns = DbHelper.GetColumnsForType<PM>();
+//            var sb = new StringBuilder();
+//            sb.Append($@"
+//update  
+//    {this.TableName} 
+//set");
+//            var ii = 0;
+//            foreach (var column in columns)
+//            {
+//                sb.Append(string.Format("{0}{1} = @{1}",
+//                    ii > 0 ? "," : string.Empty,
+//                    column.Name));
+//                ii++;
+//            }
+//            sb.Append(@"
+//where   
+//    Id = @Id");
+
+//            return sb.ToString();
+//        }
+
+//        private string GetInsertQuery()
+//        {
+//            var columns = DbHelper.GetColumnsForType<PM>();
+//            var sb = new StringBuilder();
+//            sb.Append($@"
+//insert into  
+//    {this.TableName} 
+//(");
+//            var ii = 0;
+//            foreach (var column in columns)
+//            {
+//                sb.Append(string.Format("{0}{1}",
+//                    ii > 0 ? "," : string.Empty,
+//                    column.Name));
+//                ii++;
+//            }
+//            sb.Append(") values (");
+//            ii = 0;
+//            foreach (var column in columns)
+//            {
+//                sb.Append(string.Format("{0}@{1}",
+//                    ii > 0 ? "," : string.Empty,
+//                    column.Name));
+//                ii++;
+//            }
+//            sb.Append(")");
+//            return sb.ToString();
+//        }
+
+        /// <summary>
+        /// Expose direct access to the Save persistence model base class method
+        /// </summary>
+        /// <param name="pm">The persistence model object to save</param>
+        /// <returns></returns>
+        protected virtual bool SavePM(PM pm)
         {
-            if (this.Db == null || this.Db.IsDisposed)
-            {
-                var connection = DbHelper.GetDbConnection();
-                var wrapper = new DbConnectionWrapper(connection);
-                if (startTransaction)
-                {
-                    wrapper.StartTransaction();
-                }
-
-                this.Db = wrapper;
-            }
-
-            this.Db.AddNestLevel();
-            return this.Db;
+            return base.Save(pm);
         }
 
-        private string GetUpdateQuery()
+        /// <summary>
+        /// Exposes direct access to the Get persistence model base class method
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        protected virtual PM GetPM(Guid id)
         {
-            var columns = DbHelper.GetColumnsForType<DM>();
-            var sb = new StringBuilder();
-            sb.Append($@"
-update  
-    {this.TableName} 
-set");
-            var ii = 0;
-            foreach (var column in columns)
-            {
-                sb.Append(string.Format("{0}{1} = @{1}",
-                    ii > 0 ? "," : string.Empty,
-                    column.Name));
-                ii++;
-            }
-            sb.Append(@"
-where   
-    Id = @Id");
-
-            return sb.ToString();
+            return base.Get(id);
         }
 
-        private string GetInsertQuery()
+        /// <summary>
+        /// Exposes direct access to the GetAll persistence model base class method
+        /// </summary>
+        /// <returns></returns>
+        protected virtual IEnumerable<PM> GetAllPM()
         {
-            var columns = DbHelper.GetColumnsForType<DM>();
-            var sb = new StringBuilder();
-            sb.Append($@"
-insert into  
-    {this.TableName} 
-(");
-            var ii = 0;
-            foreach (var column in columns)
-            {
-                sb.Append(string.Format("{0}{1}",
-                    ii > 0 ? "," : string.Empty,
-                    column.Name));
-                ii++;
-            }
-            sb.Append(") values (");
-            ii = 0;
-            foreach (var column in columns)
-            {
-                sb.Append(string.Format("{0}@{1}",
-                    ii > 0 ? "," : string.Empty,
-                    column.Name));
-                ii++;
-            }
-            sb.Append(")");
-            return sb.ToString();
+            return base.GetAll();
         }
     }
 }

@@ -3,7 +3,7 @@
     using DoobesBackup.Domain;
     using DoobesBackup.Infrastructure.PersistenceModels;
 
-    public class BackupDestinationRepository : Repository<BackupDestination, BackupDestinationPM>
+    public class BackupDestinationRepository : PersistenceRepository<BackupDestinationPM>
     {
         public BackupDestinationRepository(DbConnectionWrapper dbConnectionWrapper) : base("BackupDestinations", dbConnectionWrapper) { }
     }

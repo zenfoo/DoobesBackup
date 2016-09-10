@@ -12,6 +12,7 @@ namespace DoobesBackup.Infrastructure
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Data;
+    using System.Linq;
     using System.Reflection;
     using System.Text;
 
@@ -74,7 +75,7 @@ namespace DoobesBackup.Infrastructure
             }
         }
 
-        public static IEnumerable<Column> GetColumnsForType<T>() where T : Domain.Entity
+        public static IEnumerable<Column> GetColumnsForType<T>() where T : PersistenceModel
         {
             return DbHelper.GetColumnsForType(typeof(T));
         }
@@ -94,7 +95,9 @@ namespace DoobesBackup.Infrastructure
                     {
                         Name = "Id",
                         Type = ColumnType.TEXT,
-                        IsPrimaryKey = true
+                        IsPrimaryKey = true,
+                        IsForeignKey = false,
+                        PropertyPath = "Id"
                     });
                 }
                 else
@@ -103,6 +106,7 @@ namespace DoobesBackup.Infrastructure
                     var fieldType = ColumnType.UNKNOWN;
                     var typeCode = Type.GetTypeCode(prop.PropertyType);
                     var foreignKey = false;
+                    var propertyPath = prop.Name;
                     var name = prop.Name;
                     switch (typeCode)
                     {
@@ -130,12 +134,15 @@ namespace DoobesBackup.Infrastructure
                             fieldType = ColumnType.NUMERIC;
                             break;
                         case TypeCode.Object:
-                            // We will store the id of the entity in this field (Guid format)
-                            if (typeof(PersistenceModel).IsAssignableFrom(prop.PropertyType))
+                            // We will store the id of the related entity in this field (Guid format)
+                            // but only if this is not the aggregate root child entity and not the aggregate root object
+                            if (typeof(PersistenceModel).IsAssignableFrom(prop.PropertyType) &&
+                                DbHelper.IsOwner(prop))
                             {
                                 fieldType = ColumnType.TEXT;
                                 foreignKey = true;
                                 name = prop.Name + "Id";
+                                propertyPath = prop.Name + ".Id";
                             }
                             break;
                     }
@@ -147,13 +154,31 @@ namespace DoobesBackup.Infrastructure
                             Name = name,
                             Type = fieldType,
                             IsPrimaryKey = false,
-                            IsForeignKey = foreignKey
+                            IsForeignKey = foreignKey,
+                            PropertyPath = propertyPath
                         });
                     }
                 }
             }
             
             return columns;
+        }
+
+        /// <summary>
+        /// Determine if this property is the owning side of the relationship
+        /// </summary>
+        /// <param name="propInfo"></param>
+        /// <returns></returns>
+        private static bool IsOwner(PropertyInfo prop)
+        {
+            var relationshipAttribute = prop.GetCustomAttribute<RelationshipAttribute>();
+            if (relationshipAttribute != null)
+            {
+                return relationshipAttribute.IsOwner;
+            }
+
+            // By default we assume this is the owning side of the relationship
+            return true;
         }
     }
 }

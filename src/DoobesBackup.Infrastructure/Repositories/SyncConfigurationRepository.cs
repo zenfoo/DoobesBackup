@@ -20,31 +20,44 @@ namespace DoobesBackup.Infrastructure.Repositories
         
         public override bool Save(SyncConfiguration entity)
         {
+            // TODO: consider exposing transactions outside the repository layer so the client can decide...
             using (var db = this.GetDb(true))
             {
-                var result = base.Save(entity);
+                var result = true;
+                var pm = AutoMapper.Mapper.Map<SyncConfigurationPM>(entity);
+                
+                // Insert the main sync config object
+                result &= base.SavePM(pm);
+                if (!result)
+                {
+                    return false; // Should be rolled back by the open transaction
+                }
 
                 // Insert the backup source
                 var backupSourceRepo = new BackupSourceRepository(db);
-                backupSourceRepo.Save(entity.Source);
+                result &= backupSourceRepo.Save(pm.Source);
+                if (!result)
+                {
+                    return false; // Should be rolled back by the open transaction
+                }
 
                 // Insert each destination record
                 var backupDestinationRepo = new BackupDestinationRepository(db);
-                foreach(var destination in entity.Destinations)
+                foreach(var destination in pm.Destinations)
                 {
                     backupDestinationRepo.Save(destination);
                 }
 
-                // Commit or rollback transaction
+                // Commit or rollback open transaction
                 if (result)
                 {
                     db.Commit();
                 }
-                else
-                {
-                    // It will rollback automatically
-                }
+                // Else it will rollback automatically
 
+                // Return the hydrated domain entity
+                AutoMapper.Mapper.Map(pm, entity);
+                
                 return result;
             }
         }

@@ -10,7 +10,14 @@
         {
             CreateMap<SyncConfiguration, SyncConfigurationRM>();
             CreateMap<SyncConfigurationRM, SyncConfiguration>()
-                .ForCtorParam("name", opt => opt.MapFrom(src => src.Name));
+                .ForCtorParam("name", opt => opt.MapFrom(src => src.Name))
+                .AfterMap((src, dest) =>
+                {
+                    foreach (var bkpDest in src.Destinations)
+                    {
+                        dest.AddBackupDestination(Mapper.Map<BackupDestination>(bkpDest));
+                    }
+                });
             
             CreateMap<BackupSource, BackupSourceRM>();
             CreateMap<BackupSourceRM, BackupSource>()
