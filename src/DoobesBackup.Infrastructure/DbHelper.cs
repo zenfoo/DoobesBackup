@@ -6,6 +6,7 @@
 namespace DoobesBackup.Infrastructure
 {
     using Dapper;
+    using Extensions;
     using Microsoft.Data.Sqlite;
     using PersistenceModels;
     using System;
@@ -54,6 +55,11 @@ namespace DoobesBackup.Infrastructure
         public static void CreateTable(string tableName, Type entityType)
         {
             var columns = DbHelper.GetColumnsForType(entityType);
+            if (columns.Count() == 0)
+            {
+                throw new InvalidOperationException("The specified entity does not have any valid properties to persist!");
+            }
+
             var sb = new StringBuilder();
             sb.Append("CREATE TABLE " + tableName + "(");
             var ii = 0;
@@ -84,16 +90,14 @@ namespace DoobesBackup.Infrastructure
         {
             var columns = new Collection<Column>();
             var properties = entityType.GetProperties();
-            for (var ii = 0; ii < properties.Length; ii++)
+            foreach(var member in properties)
             {
-                var prop = properties[ii];
-
                 // Map properties to fields
-                if (prop.Name.ToLowerInvariant() == "id")
+                if (member.Name.ToLowerInvariant() == "id")
                 {
                     columns.Add(new Column()
                     {
-                        Name = "Id",
+                        Name = "_Id", // This is the name of the backing variable of the id in the PersistenceModel
                         Type = ColumnType.TEXT,
                         IsPrimaryKey = true,
                         IsForeignKey = false,
@@ -104,10 +108,10 @@ namespace DoobesBackup.Infrastructure
                 {
                     // Detect the type of the property down to one of TEXT, NUMERIC, INTEGER, REAL
                     var fieldType = ColumnType.UNKNOWN;
-                    var typeCode = Type.GetTypeCode(prop.PropertyType);
+                    var typeCode = Type.GetTypeCode(member.GetUnderlyingType());
                     var foreignKey = false;
-                    var propertyPath = prop.Name;
-                    var name = prop.Name;
+                    var propertyPath = member.Name;
+                    var name = member.Name;
                     switch (typeCode)
                     {
                         case TypeCode.Byte:
@@ -136,13 +140,13 @@ namespace DoobesBackup.Infrastructure
                         case TypeCode.Object:
                             // We will store the id of the related entity in this field (Guid format)
                             // but only if this is not the aggregate root child entity and not the aggregate root object
-                            if (typeof(PersistenceModel).IsAssignableFrom(prop.PropertyType) &&
-                                DbHelper.IsOwner(prop))
+                            if (typeof(PersistenceModel).IsAssignableFrom(member.GetUnderlyingType()) &&
+                                DbHelper.IsOwner(member))
                             {
                                 fieldType = ColumnType.TEXT;
                                 foreignKey = true;
-                                name = prop.Name + "Id";
-                                propertyPath = prop.Name + ".Id";
+                                name = member.Name + "Id";
+                                propertyPath = member.Name + ".Id";
                             }
                             break;
                     }
@@ -169,9 +173,9 @@ namespace DoobesBackup.Infrastructure
         /// </summary>
         /// <param name="propInfo"></param>
         /// <returns></returns>
-        private static bool IsOwner(PropertyInfo prop)
+        private static bool IsOwner(MemberInfo member)
         {
-            var relationshipAttribute = prop.GetCustomAttribute<RelationshipAttribute>();
+            var relationshipAttribute = member.GetCustomAttribute<RelationshipAttribute>();
             if (relationshipAttribute != null)
             {
                 return relationshipAttribute.IsOwner;

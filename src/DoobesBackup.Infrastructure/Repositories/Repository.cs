@@ -68,6 +68,8 @@ namespace DoobesBackup.Infrastructure
         {
             var pms = this.GetAllPM();
             return AutoMapper.Mapper.Map<IEnumerable<DM>>(pms);
+            
+            //return AutoMapper.Mapper.Map<IEnumerable<DM>>(pms);
 
             //            using (var db = this.GetDb())
             //            {

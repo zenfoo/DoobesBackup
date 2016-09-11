@@ -59,7 +59,7 @@ select
 from 
     {this.TableName}
 where 
-    Id = @Id
+    _Id = @Id
 ";
                 return db.Connection.QueryFirst<PM>(query, new { Id = id });
             }
@@ -113,7 +113,7 @@ from
 delete from 
     {this.TableName}
 where 
-    Id = @Id
+    _Id = @Id
 ";
                 var result = db.Connection.Execute(query, new { Id = id });
                 return result == 1;
@@ -161,7 +161,7 @@ set");
             }
             sb.Append(@"
 where   
-    Id = @Id");
+    _Id = @Id");
 
             return sb.ToString();
         }
@@ -222,6 +222,11 @@ insert into
                 currentType = property.PropertyType;
             }
 
+            if (value.GetType() == typeof(Guid?) || value.GetType() == typeof(Guid))
+            {
+                return value.ToString();
+            }
+            
             return value;
         }
     }

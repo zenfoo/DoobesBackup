@@ -34,9 +34,12 @@
                     }
 
                     // Add newly mapped
-                    foreach (var dest in src.Destinations)
+                    if (src.Destinations != null)
                     {
-                        targ.AddBackupDestination(Mapper.Map<BackupDestination>(dest));
+                        foreach (var dest in src.Destinations)
+                        {
+                            targ.AddBackupDestination(Mapper.Map<BackupDestination>(dest));
+                        }
                     }
                 });
 
