@@ -3,8 +3,13 @@
     /// <summary>
     /// A generic configuration item that can be used by a backup source or destination to store it's required configuration
     /// </summary>
-    public class ConfigItemPM : PersistenceModel
+    public class SourceConfigItemPM : PersistenceModel
     {
+        /// <summary>
+        /// The parent source
+        /// </summary>
+        public BackupSourcePM Parent { get; set; }
+
         /// <summary>
         /// The key name for the backup configuration item
         /// </summary>

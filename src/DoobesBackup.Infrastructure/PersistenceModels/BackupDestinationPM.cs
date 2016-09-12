@@ -30,6 +30,6 @@ namespace DoobesBackup.Infrastructure.PersistenceModels
         /// <summary>
         /// The associated configuration for this backup destination
         /// </summary>
-        public Collection<ConfigItemPM> Config { get; set; }
+        public Collection<DestinationConfigItemPM> Config { get; set; }
     }
 }

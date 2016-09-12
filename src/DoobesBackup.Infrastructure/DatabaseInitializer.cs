@@ -25,6 +25,16 @@ namespace DoobesBackup.Infrastructure
             {
                 DbHelper.CreateTable("BackupDestinations", typeof(BackupDestinationPM));
             }
+
+            if (!DbHelper.TableExists("BackupSourceConfigItems"))
+            {
+                DbHelper.CreateTable("BackupSourceConfigItems", typeof(SourceConfigItemPM));
+            }
+
+            if (!DbHelper.TableExists("BackupDestinationConfigItems"))
+            {
+                DbHelper.CreateTable("BackupDestinationConfigItems", typeof(DestinationConfigItemPM));
+            }
         }
     }
 }

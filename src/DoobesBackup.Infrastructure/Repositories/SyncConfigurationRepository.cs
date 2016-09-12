@@ -45,7 +45,7 @@ namespace DoobesBackup.Infrastructure.Repositories
                 var backupDestinationRepo = new BackupDestinationRepository(db);
                 foreach(var destination in pm.Destinations)
                 {
-                    backupDestinationRepo.Save(destination);
+                    result &= backupDestinationRepo.Save(destination);
                 }
 
                 // Commit or rollback open transaction

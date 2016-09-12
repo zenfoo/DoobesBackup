@@ -44,19 +44,82 @@
                 });
 
             CreateMap<BackupSource, BackupSourcePM>()
-                .ForMember(dst => dst.Parent, opt => opt.Ignore());
+                .ForMember(dst => dst.Parent, opt => opt.Ignore())
+                .AfterMap((src, dest) =>
+                {
+                    foreach (var cfg in dest.Config)
+                    {
+                        cfg.Parent = dest;
+                    }
+                    //dest.Config.Clear();
+
+                    //if (src.Config != null)
+                    //{
+                    //    foreach (var cfg in src.Config)
+                    //    {
+                    //        dest.Config.Add(Mapper.Map<SourceConfigItemPM>(cfg));
+                    //    }
+                    //}
+                });
             CreateMap<BackupSourcePM, BackupSource>()
                 .ForCtorParam("name", opt => opt.MapFrom(src => src.Name))
-                .ForCtorParam("type", opt => opt.MapFrom(src => src.Type));
+                .ForCtorParam("type", opt => opt.MapFrom(src => src.Type))
+                .AfterMap((src, dest) =>
+                {
+                    for(var ii = dest.Config.Count - 1; ii >= 0; ii--)
+                    {
+                        dest.RemoveConfigItem(dest.Config[ii]);
+                    }
+
+                    foreach(var cfg in src.Config)
+                    {
+                        dest.AddConfigItem(Mapper.Map<ConfigItem>(cfg));
+                    }
+                });
 
             CreateMap<BackupDestination, BackupDestinationPM>()
-                .ForMember(dst => dst.Parent, opt => opt.Ignore());
+                .ForMember(dst => dst.Parent, opt => opt.Ignore())
+                .AfterMap((src, dest) =>
+                {
+                    foreach (var cfg in dest.Config)
+                    {
+                        cfg.Parent = dest;
+                    }
+
+                    //dest.Config.Clear();
+
+                    //if (src.Config != null)
+                    //{
+                    //    foreach (var cfg in src.Config)
+                    //    {
+
+                    //        dest.Config.Add(Mapper.Map<SourceConfigItemPM>(cfg));
+                    //    }
+                    //}
+                });
             CreateMap<BackupDestinationPM, BackupDestination>()
                 .ForCtorParam("name", opt => opt.MapFrom(src => src.Name))
-                .ForCtorParam("type", opt => opt.MapFrom(src => src.Type));
+                .ForCtorParam("type", opt => opt.MapFrom(src => src.Type))
+                .AfterMap((src, dest) =>
+                {
+                    for (var ii = dest.Config.Count - 1; ii >= 0; ii--)
+                    {
+                        dest.RemoveConfigItem(dest.Config[ii]);
+                    }
 
-            CreateMap<ConfigItem, ConfigItemPM>();
-            CreateMap<ConfigItemPM, ConfigItem>();
+                    foreach (var cfg in src.Config)
+                    {
+                        dest.AddConfigItem(Mapper.Map<ConfigItem>(cfg));
+                    }
+                });
+
+            CreateMap<ConfigItem, SourceConfigItemPM>()
+                .ForMember(dest => dest.Parent, opt => opt.Ignore());
+            CreateMap<SourceConfigItemPM, ConfigItem>();
+
+            CreateMap<ConfigItem, DestinationConfigItemPM>()
+                .ForMember(dest => dest.Parent, opt => opt.Ignore()); ;
+            CreateMap<DestinationConfigItemPM, ConfigItem>();
         }
     }
 }

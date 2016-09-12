@@ -43,7 +43,7 @@ namespace DoobesBackup.Service.Modules
                     Guid id;
                     if (Guid.TryParse(args.id, out id))
                     {
-                        var syncConfig = this.syncConfigurationRepository.Get((Guid)args.id);
+                        var syncConfig = this.syncConfigurationRepository.Get(id);
                         return Response.AsJson(Mapper.Map<SyncConfigurationRM>(syncConfig));
                     }
 
