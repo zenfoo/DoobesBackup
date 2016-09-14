@@ -50,6 +50,73 @@ select d1.* from BackupDestinationConfigItems d1 inner join BackupDestinations d
             }
         }
 
+        public override IEnumerable<SyncConfiguration> GetAll()
+        {
+            var sql = $@"
+select * from {this.TableName} order by _Id;
+select * from BackupSources t1 inner join SyncConfigurations t2 on t1.ParentId = t2._Id order by ParentId;
+select * from BackupDestinations t1 inner join SyncConfigurations t2 on t1.ParentId = t2._Id order by ParentId;
+select * from BackupSourceConfigItems t1 inner join BackupSources t2 on t1.ParentId = t2._Id order by ParentId;
+select * from BackupDestinationConfigItems t1 inner join BackupDestinations t2 on t1.ParentId = t2._Id order by ParentId;";
+
+            using (var db = this.GetDb(false))
+            {
+                using (var multi = db.Connection.QueryMultiple(sql))
+                {
+                    // Extract the data from each dataset
+                    var syncConfigs = multi.Read<SyncConfigurationPM>();
+                    var backupSources = multi.Read<BackupSourcePM, SyncConfigurationPM, BackupSourcePM>(
+                        (first, second) =>
+                        {
+                            first.Parent = second;
+                            return first;
+                        }, "_Id");
+                    var backupDestinations = multi.Read<BackupDestinationPM, SyncConfigurationPM, BackupDestinationPM>(
+                        (first, second) =>
+                        {
+                            first.Parent = second;
+                            return first;
+                        }, "_Id");
+                    var sourceConfigItems = multi.Read<SourceConfigItemPM, BackupSourcePM, SourceConfigItemPM>(
+                        (first, second) =>
+                        {
+                            first.Parent = second;
+                            return first;
+                        }, "_Id");
+                    var destinationConfigItems = multi.Read<DestinationConfigItemPM, BackupDestinationPM, DestinationConfigItemPM>(
+                        (first, second) =>
+                        {
+                            first.Parent = second;
+                            return first;
+                        }, "_Id");
+
+
+                    // From lowest to highest scan through the records and build up the sync config items with their children
+                    foreach (var destConfigItem in destinationConfigItems)
+                    {
+                        backupDestinations.Single(bd => bd.Id == destConfigItem.Parent.Id).Config.Add(destConfigItem);
+                    }
+
+                    foreach (var sourceConfigItem in sourceConfigItems)
+                    {
+                        backupSources.Single(bs => bs.Id == sourceConfigItem.Parent.Id).Config.Add(sourceConfigItem);
+                    }
+
+                    foreach (var backupSource in backupSources)
+                    {
+                        syncConfigs.Single(sc => sc.Id == backupSource.Parent.Id).Source = backupSource;
+                    }
+
+                    foreach (var backupDestination in backupDestinations)
+                    {
+                        syncConfigs.Single(sc => sc.Id == backupDestination.Parent.Id).Destinations.Add(backupDestination);
+                    }
+                    
+                    return AutoMapper.Mapper.Map<IEnumerable<SyncConfiguration>>(syncConfigs);
+                }
+            }
+        }
+
         public override bool Save(SyncConfiguration entity)
         {
             // TODO: consider exposing transactions outside the repository layer so the client can decide...
