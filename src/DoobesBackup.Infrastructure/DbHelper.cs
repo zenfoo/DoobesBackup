@@ -89,7 +89,24 @@ namespace DoobesBackup.Infrastructure
         public static IEnumerable<Column> GetColumnsForType(Type entityType)
         {
             var columns = new Collection<Column>();
-            var properties = entityType.GetProperties();
+            var properties = entityType.GetProperties()
+                .OrderBy(p => p.Name, Comparer<string>.Create((x,y) => 
+                {
+                    // Ensure id is at the front of the list
+                    if (x.ToLowerInvariant() == "id")
+                    {
+                        return -1;
+                    }
+
+                    if (y.ToLowerInvariant() == "id")
+                    {
+                        return 1;
+                    }
+
+                    return x.CompareTo(y);
+                }));
+
+
             foreach(var member in properties)
             {
                 // Map properties to fields
