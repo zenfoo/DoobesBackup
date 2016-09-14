@@ -5,6 +5,11 @@
 
     public class SyncConfigurationPM : PersistenceModel
     {
+        public SyncConfigurationPM()
+        {
+            this.Destinations = new Collection<BackupDestinationPM>();
+        }
+
         public virtual int IntervalSeconds { get; set; }
         public virtual string Name { get; set; }
         [Relationship(false)]

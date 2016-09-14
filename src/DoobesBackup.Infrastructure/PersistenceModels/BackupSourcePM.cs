@@ -12,6 +12,11 @@ namespace DoobesBackup.Infrastructure.PersistenceModels
     /// </summary>
     public class BackupSourcePM : PersistenceModel
     {
+        public BackupSourcePM()
+        {
+            this.Config = new Collection<SourceConfigItemPM>();
+        }
+
         /// <summary>
         /// The parent sync configuration
         /// </summary>
