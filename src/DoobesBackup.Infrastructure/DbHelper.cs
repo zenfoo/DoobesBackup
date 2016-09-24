@@ -16,6 +16,9 @@ namespace DoobesBackup.Infrastructure
     using System.Linq;
     using System.Reflection;
     using System.Text;
+    using System.Diagnostics;
+    using System.IO;
+    using Framework;
 
     /// <summary>
     /// Helper class for dealing with SqLite database implementation
@@ -27,11 +30,20 @@ namespace DoobesBackup.Infrastructure
         /// </summary>
         /// <param name="open">Open the connection immediately?</param>
         /// <returns>The database connection</returns>
-        public static IDbConnection GetDbConnection()
+        public static IDbConnection GetDbConnection(string dbName = "data.db")
         {
-            var connection = new SqliteConnection("Data Source=data.db");
+            var path = DbHelper.GetDbPath(dbName);
+            var connection = new SqliteConnection(string.Format("Data Source={0}", path));
             connection.Open();
             return connection;
+        }
+
+        public static void DeleteDb(string dbName = "data.db")
+        {
+            if (File.Exists(GetDbPath(dbName)))
+            {
+                File.Delete(GetDbPath(dbName));
+            }
         }
         
         /// <summary>
@@ -39,9 +51,9 @@ namespace DoobesBackup.Infrastructure
         /// </summary>
         /// <param name="tableName">The name of the table</param>
         /// <returns>Boolean value indicating whether the table exists or not</returns>
-        public static bool TableExists(string tableName)
+        public static bool TableExists(string tableName, string dbName = "data.db")
         {
-            using (var db = DbHelper.GetDbConnection())
+            using (var db = DbHelper.GetDbConnection(dbName))
             {
                 var count = db.ExecuteScalar<int>("SELECT count(*) FROM sqlite_master WHERE type='table' AND name=@TableName;", new { TableName = tableName });
                 return count > 0;
@@ -52,7 +64,7 @@ namespace DoobesBackup.Infrastructure
         /// Create a table that maps to the type specified
         /// </summary>
         /// <param name="entityType">The object type to create</param>
-        public static void CreateTable(string tableName, Type entityType)
+        public static void CreateTable(string tableName, Type entityType, string dbName = "data.db")
         {
             var columns = DbHelper.GetColumnsForType(entityType);
             if (columns.Count() == 0)
@@ -75,7 +87,7 @@ namespace DoobesBackup.Infrastructure
             }
 
             sb.Append(");");
-            using (var db = DbHelper.GetDbConnection())
+            using (var db = DbHelper.GetDbConnection(dbName))
             {
                 var result = db.Execute(sb.ToString());
             }
@@ -86,9 +98,21 @@ namespace DoobesBackup.Infrastructure
             return DbHelper.GetColumnsForType(typeof(T));
         }
 
+        /// <summary>
+        /// Retrieve a collection of columns for the given type
+        /// </summary>
+        /// <param name="entityType">The type to inspect (it is expected to be of type PersistenceModel)</param>
+        /// <returns></returns>
         public static IEnumerable<Column> GetColumnsForType(Type entityType)
         {
+            if (!typeof(PersistenceModel).IsAssignableFrom(entityType))
+            {
+                throw new ArgumentException("Invalid type specified, expecting a type of PersistenceModel", "entityType");
+            }
+
             var columns = new Collection<Column>();
+
+            // Sort the properties so the id property is listed first
             var properties = entityType.GetProperties()
                 .OrderBy(p => p.Name, Comparer<string>.Create((x,y) => 
                 {
@@ -200,6 +224,12 @@ namespace DoobesBackup.Infrastructure
 
             // By default we assume this is the owning side of the relationship
             return true;
+        }
+
+        private static string GetDbPath(string dbName)
+        {
+            var directory = Path.GetDirectoryName(AssemblyHelper.GetAssemblyPathForType(typeof(DbHelper)));
+            return Path.Combine(directory, dbName);
         }
     }
 }

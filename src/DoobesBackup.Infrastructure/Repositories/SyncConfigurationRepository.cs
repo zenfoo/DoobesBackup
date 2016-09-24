@@ -35,7 +35,12 @@ select d1.* from BackupDestinationConfigItems d1 inner join BackupDestinations d
             {
                 using (var multi = db.Connection.QueryMultiple(sql, new { Id = id.ToString() }))
                 {
-                    var syncConfig = multi.Read<SyncConfigurationPM>().Single();
+                    var syncConfig = multi.Read<SyncConfigurationPM>().FirstOrDefault();
+                    if (syncConfig == null)
+                    {
+                        return null;
+                    }
+
                     syncConfig.Source = multi.Read<BackupSourcePM>().Single();
                     syncConfig.Source.Config = new Collection<SourceConfigItemPM>(multi.Read<SourceConfigItemPM>().ToList());
                     syncConfig.Destinations = new Collection<BackupDestinationPM>(multi.Read<BackupDestinationPM>().ToList());
@@ -158,6 +163,45 @@ select * from BackupDestinationConfigItems t1 inner join BackupDestinations t2 o
                 AutoMapper.Mapper.Map(pm, entity);
                 
                 return result;
+            }
+        }
+
+        public override bool Delete(Guid id)
+        {
+            var syncConfig = this.Get(id);
+            if (syncConfig == null)
+            {
+                return false;
+            }
+            
+            // Start a new transaction
+            using (var db = this.GetDb(true))
+            {
+                // Cleanup source
+                if (syncConfig.Source?.Id.HasValue ?? false)
+                {
+                    var backupSourceRepo = new BackupSourceRepository(db);
+                    backupSourceRepo.Delete(syncConfig.Source.Id.Value);
+                }
+
+                // Cleanup destinations
+                var backupDestionationRepo = new BackupDestinationRepository(db);
+                foreach (var dest in syncConfig.Destinations)
+                {
+                    if (dest?.Id.HasValue ?? false)
+                    {
+                        backupDestionationRepo.Delete(dest.Id.Value);
+                    }
+                }
+                
+                // Delete the aggregate root record and commit all the changes if successful
+                if (base.Delete(id))
+                {
+                    db.Commit();
+                    return true;
+                }
+                
+                return false;
             }
         }
     }

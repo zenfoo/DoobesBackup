@@ -1,5 +1,6 @@
 ﻿namespace DoobesBackup.Infrastructure.Repositories
 {
+    using System;
     using DoobesBackup.Domain;
     using DoobesBackup.Infrastructure.PersistenceModels;
 
@@ -28,8 +29,22 @@
                     result &= configRepo.Save(configItem);
                 }
 
+                if (result)
+                {
+                    db.Commit();
+                }
+
                 return result;
             }
+        }
+
+        public override bool Delete(Guid id)
+        {
+            using (var db = this.GetDb(true))
+            {
+
+            }
+                return base.Delete(id);
         }
     }
 }

@@ -12,9 +12,7 @@
     {
         public static void Configure()
         {
-            var libraries = DependencyContext.Default.RuntimeLibraries;
-            var assemblies = libraries.SelectMany(s => s.GetDefaultAssemblyNames(DependencyContext.Default)).Select(Assembly.Load);
-            
+            var assemblies = AssemblyHelper.GetAllDependantAssemblies();
             foreach (var assembly in assemblies)
             {
                 var configTypes = assembly.GetTypes()
@@ -22,6 +20,7 @@
                     .Where(t => !t.GetTypeInfo().IsAbstract)
                     .Where(t => !t.GetTypeInfo().IsInterface)
                     .Where(t => t.GetTypeInfo().IsClass);
+
                 foreach (var configType in configTypes)
                 {
                     var configuration = Activator.CreateInstance(configType) as IGlobalConfiguration;

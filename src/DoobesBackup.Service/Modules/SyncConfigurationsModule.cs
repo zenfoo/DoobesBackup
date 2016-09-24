@@ -44,7 +44,12 @@ namespace DoobesBackup.Service.Modules
                     if (Guid.TryParse(args.id, out id))
                     {
                         var syncConfig = this.syncConfigurationRepository.Get(id);
-                        return Response.AsJson(Mapper.Map<SyncConfigurationRM>(syncConfig));
+                        if (syncConfig != null)
+                        { 
+                            return Response.AsJson(Mapper.Map<SyncConfigurationRM>(syncConfig));
+                        }
+
+                        return HttpStatusCode.NotFound;
                     }
 
                     return HttpStatusCode.BadRequest;

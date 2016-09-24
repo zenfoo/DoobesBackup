@@ -133,8 +133,11 @@ where
 
                 this.Db = wrapper;
             }
+            else
+            {
+                this.Db.AddScope();
+            }
 
-            this.Db.AddNestLevel();
             return this.Db;
         }
         
