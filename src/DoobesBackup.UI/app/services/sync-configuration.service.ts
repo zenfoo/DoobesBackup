@@ -17,7 +17,7 @@ export class SyncConfigurationService {
         return this._http.get(this._configuration.ServerWithBaseUrl + "syncconfigurations")
             .toPromise()
             .then((response: Response) => {
-                var data = <SyncConfiguration[]>response.json();
+                var data: SyncConfiguration[] = <SyncConfiguration[]>response.json();
                 return data;
             })
             .catch(this.handleError);
@@ -27,7 +27,7 @@ export class SyncConfigurationService {
         return this._http.get(this._configuration.ServerWithBaseUrl + "syncconfigurations/" + id)
             .toPromise()
             .then((response: Response) => {
-                var data = <SyncConfiguration>response.json();
+                var data: SyncConfiguration = <SyncConfiguration>response.json();
                 return data;
             })
             .catch(this.handleError);

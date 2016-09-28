@@ -4,15 +4,17 @@ import { SyncConfigurationService } from "../services/sync-configuration.service
 import { SyncConfiguration } from "../models/sync-configuration.model";
 
 @Component({
-    selector: "main-panel",
+    selector: "sync-configuration-list-panel",
     template: `
 <h2>{{title}}</h2>
 <ul class="sync-configurations">
     <li 
-        *ngFor="let syncConfig of syncConfigurations" 
+        *ngFor="let syncConfig of syncConfigurations; let ii = index;" 
         (click)="onSelect(syncConfig)"
         [class.selected]="syncConfig === selectedSyncConfig">
-        <span class="badge">{{syncConfig.id}}</span> {{syncConfig.name}}
+        <span class="badge">{{ii}}</span>
+        <span class="label">{{syncConfig.name}}</span>
+        <a routerLink="/syncconfigurations/{{syncConfig.id}}" class="btn-edit">Edit</a>
     </li>
 </ul>
 `,

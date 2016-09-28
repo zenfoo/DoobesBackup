@@ -2,7 +2,7 @@
 import { Hero } from "../models/hero.model";
 
 @Component({
-    selector: "my-hero-detail",
+    selector: "hero-detail-panel",
     template: `
 <div *ngIf="hero">
     <h2>{{hero.name}} details!</h2>

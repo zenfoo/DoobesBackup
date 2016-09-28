@@ -1,7 +1,7 @@
 ﻿import { Component } from "@angular/core";
 
 @Component({
-    selector: "dashboard-view",
+    selector: "dashboard-panel",
     template: `
 <div>
     <p>This is the dashboard view</p>
