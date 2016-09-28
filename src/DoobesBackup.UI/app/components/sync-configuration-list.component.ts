@@ -1,22 +1,20 @@
 import { Component, OnInit } from "@angular/core";
 import { Hero } from "../models/hero.model";
 import { SyncConfigurationService } from "../services/sync-configuration.service";
-// import { Http } from "@angular/http";
-// import { Configuration } from "../Constants";
+import { SyncConfiguration } from "../models/sync-configuration.model";
 
 @Component({
-    selector: "my-heroes",
+    selector: "main-panel",
     template: `
-<h2>My Heroes</h2>
-<ul class="heroes">
+<h2>{{title}}</h2>
+<ul class="sync-configurations">
     <li 
-        *ngFor="let hero of heroes" 
-        (click)="onSelect(hero)"
-        [class.selected]="hero === selectedHero">
-        <span class="badge">{{hero.id}}</span> {{hero.name}}
+        *ngFor="let syncConfig of syncConfigurations" 
+        (click)="onSelect(syncConfig)"
+        [class.selected]="syncConfig === selectedSyncConfig">
+        <span class="badge">{{syncConfig.id}}</span> {{syncConfig.name}}
     </li>
 </ul>
-<my-hero-detail [hero]="selectedHero"></my-hero-detail>
 `,
     styles: [`
   .selected {
@@ -69,24 +67,26 @@ import { SyncConfigurationService } from "../services/sync-configuration.service
 `]
 })
 
-export class HeroesComponent implements OnInit {
-    title:string = "Some component title";
-    selectedHero: Hero;
-    heroes: Hero[];
+export class SyncConfigurationListComponent implements OnInit {
+    title:string = "Sync configurations";
+    selectedSyncConfiguration: SyncConfiguration;
+    syncConfigurations: SyncConfiguration[];
 
     constructor(private syncConfigurationService: SyncConfigurationService) {
         // this.heroes = this.syncConfigurationService.getAll();
         // alert(syncConfigurations.count);
     }
-    onSelect(hero: Hero): void {
-        this.selectedHero = hero;
+    onSelect(syncConfig: SyncConfiguration): void {
+        this.selectedSyncConfiguration = syncConfig;
     }
-    getHeroes():void {
-        this.syncConfigurationService.getAll()
-            .then((heroes:Hero[]) => this.heroes = heroes);
+    getSyncConfigurations():void {
+        this.syncConfigurationService.getAllConfigurations()
+            .then((syncConfigurations: SyncConfiguration[]) => {
+                this.syncConfigurations = syncConfigurations
+            });
     }
     ngOnInit():void {
-        this.getHeroes();
+        this.getSyncConfigurations();
     }
 
 }

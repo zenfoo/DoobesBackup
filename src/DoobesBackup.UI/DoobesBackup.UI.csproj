@@ -43,6 +43,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="app\app.routing.ts" />
+    <TypeScriptCompile Include="app\components\not-found.component.ts" />
+    <TypeScriptCompile Include="app\components\dashboard.component.ts" />
     <TypeScriptCompile Include="app\components\main-menu.component.ts" />
     <Content Include="lib\%40angular\common\bundles\common.umd.js" />
     <Content Include="lib\%40angular\common\bundles\common.umd.min.js" />
@@ -1606,7 +1609,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="app\components\app.component.ts" />
-    <TypeScriptCompile Include="app\components\heroes.component.ts" />
+    <TypeScriptCompile Include="app\components\sync-configuration-list.component.ts" />
     <TypeScriptCompile Include="app\components\hero-detail.component.ts" />
     <TypeScriptCompile Include="app\app-configuration.ts" />
     <TypeScriptCompile Include="app\models\backup-source.model.ts" />

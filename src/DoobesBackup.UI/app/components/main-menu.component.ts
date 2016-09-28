@@ -2,9 +2,7 @@
 import { MenuItem } from "../models/menu-item.model";
 
 export const MAIN_MENU_ITEMS: MenuItem[] = [
-    { id: 1, label: "Backup Sources", route: "/backup-sources" },
-    { id: 1, label: "Backup Destinations", route: "/backup-destinations" },
-    { id: 1, label: "Backup Configurations", route: "/backup-configurations" }
+    { id: 1, label: "Sync configurations", route: "/syncconfigurations" }
 ];
 
 
@@ -16,7 +14,7 @@ export const MAIN_MENU_ITEMS: MenuItem[] = [
         *ngFor="let menuItem of menuItems" 
         (click)="onSelect(menuItem)"
         [class.selected]="menuItem === selectedMenuItem">
-        <a href="#">{{menuItem.label}}</a>
+        <a routerLink="{{menuItem.route}}">{{menuItem.label}}</a>
     </li>
 </ul>
 `
@@ -31,6 +29,7 @@ export class MainMenuComponent {
     }
 
     onSelect(menuItem: MenuItem) : void {
-        alert(menuItem.label);
+        //alert(menuItem.label);
+        // TODO: store the last selected view
     }
 }

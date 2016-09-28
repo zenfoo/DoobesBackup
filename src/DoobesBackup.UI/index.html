@@ -1,5 +1,6 @@
 ﻿<html>
 <head>
+    <base href="/">
     <title>Doobes Backup</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,7 +27,11 @@
 <body class="nav-md">
     <div class="container body">
         <div class="main_container">
-            <my-app>Loading, please wait...</my-app>
+            <my-app>
+                <div class="loading-panel">
+                    <p class="loading-text">Loading, please wait...</p>
+                </div>
+            </my-app>
         </div>
     </div>
 </body>
