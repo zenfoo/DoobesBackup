@@ -13,7 +13,7 @@ import { SyncConfiguration } from "../models/sync-configuration.model";
         (click)="onSelect(syncConfig)"
         [class.selected]="syncConfig === selectedSyncConfig">
         <span class="badge">{{ii}}</span>
-        <span class="label">{{syncConfig.name}}</span>
+        <span class="title">{{syncConfig.name}}</span>
         <a routerLink="/syncconfigurations/{{syncConfig.id}}" class="btn-edit">Edit</a>
     </li>
 </ul>

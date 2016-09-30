@@ -1,18 +1,49 @@
-h1 { font-size: 24px; }
-
-
-
+/* General styles */
+h1 { font-size: 26px; margin: 0; line-height: 40px; }
 .container { width: 100%; }
-
-.main_container .left_col { padding: 10px; }
-.main_container .right_col { padding: 10px; }
-
-.loading-panel { display: flex; height: 100vh; align-items: center; justify-content: center; }
-.loading-text { flex: none; font-size: 20px; max-width: 50%; color: #cccccc; }
-
-.top-nav { margin: 0 !important; height: 40px; background: #eeeeee; color: #aaaaaa; line-height: 40px; font-size: 26px; vertical-align: middle; padding: 0 10px 0 0; }
+.left_col { padding: 10px; }
+.right_col { padding: 10px; }
+.top-nav { 
+    height: 40px; 
+    line-height: 40px; 
+    font-size: 26px; 
+    vertical-align: middle;
+    padding: 0 10px 0 0;
+    background: #eeeeee; 
+    color: #aaaaaa;
+}
 .top-nav nav { float: right; }
 .top-nav i { height: 40px; line-height: 40px; }
 .top-nav a { color: #aaaaaa; }
 .top-nav .toggle { width: auto; }
+
+
+/* Loading screen */
+.loading-panel { display: flex; height: 100vh; align-items: center; justify-content: center; }
+.loading-text { flex: none; font-size: 20px; max-width: 50%; color: #cccccc; }
+
+
+/* Dashboard screen */
+.flex-row { display: flex; }
+.flex-col {
+    background: #eeeeee;
+    color: #aaaaaa;
+    flex: 1;
+    margin: 10px;
+    padding: 10px;
+}
+.flex-col:first-child {
+    margin-left: 0;
+}
+.flex-col:last-child {
+    margin-right: 0;
+}
+@media (max-width: 400px) {
+  .flex-row {
+    display: block;
+  }
+  .flex-col {
+      margin: 10px 0 !important;
+  }
+}
 
