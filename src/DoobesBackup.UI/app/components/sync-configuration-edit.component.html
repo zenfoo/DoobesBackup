@@ -1,0 +1,16 @@
+﻿<h2>{{title}}</h2>
+<form>
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" required [(ngModel)]="model.name" name="name">
+        TODO: remove this: {{model.name}}
+    </div>
+    <div class="form-group">
+        <label for="intervalSeconds">Sync Interval</label>
+        <input type="text" class="form-control" id="intervalSeconds" required [(ngModel)]="model.intervalSeconds" name="intervalSeconds">
+        TODO: remove this: {{model.intervalSeconds}}
+    </div>
+    <button type="submit" class="btn btn-default">Save</button>
+    <button type="submit" class="btn btn-default">Cancel</button>
+    <button type="submit" class="btn btn-default">Delete</button>
+</form>

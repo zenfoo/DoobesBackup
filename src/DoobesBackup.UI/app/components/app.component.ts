@@ -1,4 +1,5 @@
-﻿import { Component } from "@angular/core";
+﻿import { Component, OnInit } from "@angular/core";
+import { HealthCheckService } from "../services/health-check.service";
 
 @Component({
     selector: 'doobes-app',
@@ -33,6 +34,22 @@
 `
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit {
     title: string = "Doobes Backup";
+
+    constructor(private healthCheckService: HealthCheckService) { }
+
+    ngOnInit(): void {
+        this.checkHealth();
+    }
+
+    checkHealth(): void {
+        this.healthCheckService.isHealthy()
+            .then((isHealthy: boolean) => {
+                if (!isHealthy) {
+                    alert("Could not connect to backend service! Click OK to reload the app.");
+                    window.location.replace("/");
+                }
+            });
+    }
 }

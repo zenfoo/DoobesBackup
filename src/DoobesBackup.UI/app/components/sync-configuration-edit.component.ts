@@ -6,16 +6,12 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
     selector: "sync-configuration-edit-panel",
-    template: `
-<h2>{{title}}</h2>
-<input type="text" value="{{syncConfig.name}}" name="name" />
-<input type="button" name="submit" type="submit" value="Save" />
-`
+    templateUrl: "/components/sync-configuration-edit.component.html"
 })
 
 export class SyncConfigurationEditComponent implements OnInit {
     title:string = "Edit sync configuration";
-    syncConfig: SyncConfiguration;
+    model: SyncConfiguration;
 
     constructor(
         private syncConfigurationService: SyncConfigurationService,
@@ -24,7 +20,7 @@ export class SyncConfigurationEditComponent implements OnInit {
     loadSyncConfiguration(id: string):void {
         this.syncConfigurationService.getById(id)
             .then((syncConfiguration: SyncConfiguration) => {
-                this.syncConfig = syncConfiguration
+                this.model = syncConfiguration;
             });
     }
 

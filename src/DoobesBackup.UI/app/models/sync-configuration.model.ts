@@ -4,7 +4,7 @@ import { BackupSource } from "./backup-source.model";
 export class SyncConfiguration {
     id: number;
     name: string;
-    //intervalSeconds: number;
+    intervalSeconds: number;
     //source: BackupSource;
     //destination: BackupDestination;
 }

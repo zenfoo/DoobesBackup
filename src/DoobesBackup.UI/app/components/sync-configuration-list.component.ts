@@ -74,19 +74,19 @@ export class SyncConfigurationListComponent implements OnInit {
     selectedSyncConfiguration: SyncConfiguration;
     syncConfigurations: SyncConfiguration[];
 
-    constructor(private syncConfigurationService: SyncConfigurationService) {
-        // this.heroes = this.syncConfigurationService.getAll();
-        // alert(syncConfigurations.count);
-    }
+    constructor(private syncConfigurationService: SyncConfigurationService) { }
+
     onSelect(syncConfig: SyncConfiguration): void {
         this.selectedSyncConfiguration = syncConfig;
     }
+
     getSyncConfigurations():void {
         this.syncConfigurationService.getAllConfigurations()
             .then((syncConfigurations: SyncConfiguration[]) => {
                 this.syncConfigurations = syncConfigurations
             });
     }
+
     ngOnInit():void {
         this.getSyncConfigurations();
     }

@@ -12,6 +12,7 @@ import { MainMenuComponent } from "../components/main-menu.component";
 import { DashboardComponent } from "../components/dashboard.component";
 import { routing } from "../app.routing";
 import { NotFoundComponent } from "../components/not-found.component";
+import { HealthCheckService } from "../services/health-check.service";
 
 @NgModule({
     imports: [ BrowserModule, FormsModule, HttpModule, routing ],
@@ -22,7 +23,7 @@ import { NotFoundComponent } from "../components/not-found.component";
         SyncConfigurationListComponent,
         SyncConfigurationEditComponent,
         NotFoundComponent],
-    providers: [ AppConfiguration, SyncConfigurationService ],
+    providers: [ AppConfiguration, SyncConfigurationService, HealthCheckService ],
     bootstrap: [ AppComponent ]
 })
 
