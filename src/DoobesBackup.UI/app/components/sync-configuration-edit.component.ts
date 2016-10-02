@@ -31,5 +31,17 @@ export class SyncConfigurationEditComponent implements OnInit {
             this.loadSyncConfiguration(id);
         });
     }
+
+    onSubmit(): void {
+        alert("Saving this sucka");
+    }
+
+    onCancel(): void {
+        alert("Cancel the change");
+    }
+
+    onDelete(): void {
+        alert("Delete this configuration");
+    }
 }
 
