@@ -47,7 +47,9 @@
     <TypeScriptCompile Include="app\components\not-found.component.ts" />
     <TypeScriptCompile Include="app\components\dashboard.component.ts" />
     <TypeScriptCompile Include="app\components\main-menu.component.ts" />
+    <Content Include="app\components\app.component.html" />
     <Content Include="app\components\sync-configuration-edit.component.html" />
+    <Content Include="app\components\sync-configuration-list.component.html" />
     <Content Include="lib\%40angular\common\bundles\common.umd.js" />
     <Content Include="lib\%40angular\common\bundles\common.umd.min.js" />
     <Content Include="lib\%40angular\common\esm\index.js" />

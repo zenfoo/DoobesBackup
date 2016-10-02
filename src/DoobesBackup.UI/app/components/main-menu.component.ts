@@ -2,6 +2,7 @@
 import { MenuItem } from "../models/menu-item.model";
 
 export const MAIN_MENU_ITEMS: MenuItem[] = [
+    { id: 0, label: "Dashboard", route: "/dashboard" },
     { id: 1, label: "Sync configurations", route: "/syncconfigurations" }
 ];
 
@@ -28,7 +29,8 @@ export class MainMenuComponent {
         this.selectedMenuItem = this.menuItems[0];
     }
 
-    onSelect(menuItem: MenuItem) : void {
+    onSelect(menuItem: MenuItem): void {
+        this.selectedMenuItem = menuItem;
         //alert(menuItem.label);
         // TODO: store the last selected view
     }
