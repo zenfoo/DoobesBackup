@@ -5,13 +5,14 @@ import { SyncConfiguration } from "../models/sync-configuration.model";
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
+    moduleId: module.id,
     selector: "sync-configuration-edit-panel",
-    templateUrl: "/components/sync-configuration-edit.component.html"
+    templateUrl: "sync-configuration-edit.component.html"
 })
 
 export class SyncConfigurationEditComponent implements OnInit {
     title:string = "Edit sync configuration";
-    model: SyncConfiguration;
+    model: SyncConfiguration = new SyncConfiguration();
 
     constructor(
         private syncConfigurationService: SyncConfigurationService,
