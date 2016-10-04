@@ -61,7 +61,7 @@ from
 where 
     _Id = @Id
 ";
-                return db.Connection.QueryFirst<PM>(query, new { Id = id });
+                return db.Connection.QueryFirst<PM>(query, new { Id = id.ToString() });
             }
         }
         
@@ -115,7 +115,7 @@ delete from
 where 
     _Id = @Id
 ";
-                var result = db.Connection.Execute(query, new { Id = id });
+                var result = db.Connection.Execute(query, new { Id = id.ToString() });
                 return result == 1;
             }
         }
@@ -205,7 +205,7 @@ insert into
         }
         
         /// <summary>
-        /// Thanks Jon Skeet:
+        /// Thanks to Jon Skeet for this snippet:
         /// http://stackoverflow.com/a/366339/540151
         /// </summary>
         /// <param name="value"></param>

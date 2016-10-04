@@ -3,6 +3,7 @@ import { Hero } from "../models/hero.model";
 import { SyncConfigurationService } from "../services/sync-configuration.service";
 import { SyncConfiguration } from "../models/sync-configuration.model";
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { FormGroup } from "@angular/forms";
 
 @Component({
     moduleId: module.id,
@@ -16,7 +17,8 @@ export class SyncConfigurationEditComponent implements OnInit {
 
     constructor(
         private syncConfigurationService: SyncConfigurationService,
-        private route: ActivatedRoute) { }
+        private route: ActivatedRoute,
+        private router: Router) { }
     
     loadSyncConfiguration(id: string):void {
         this.syncConfigurationService.getById(id)
@@ -32,16 +34,22 @@ export class SyncConfigurationEditComponent implements OnInit {
         });
     }
 
-    onSubmit(): void {
+    onSubmit(syncConfigForm: FormGroup): void {
         alert("Saving this sucka");
     }
 
-    onCancel(): void {
-        alert("Cancel the change");
+    onCancel(syncConfigForm: FormGroup): void {
+        if (syncConfigForm.dirty && !confirm("Discard changes?")) {
+            return;
+        }
+
+        this.router.navigate(["/syncconfigurations"]);
     }
 
     onDelete(): void {
-        alert("Delete this configuration");
+        if (confirm("Are you sure you want to delete this configuration?")) {
+            this.syncConfigurationService.deleteById(this.model.id);
+        }
     }
 }
 

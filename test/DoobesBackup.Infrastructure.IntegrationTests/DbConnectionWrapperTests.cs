@@ -103,5 +103,39 @@ namespace DoobesBackup.Infrastructure.UnitTests
             Assert.True(DbHelper.TableExists("InnerTable", "test.db"));
             Assert.True(DbHelper.TableExists("OuterTable", "test.db"));
         }
+
+        [Fact]
+        public void NestedWrapper_DeleteChildAndParent_AllStatementsPersist()
+        {
+            DbHelper.DeleteDb("test.db");
+            var connection = DbHelper.GetDbConnection("test.db");
+
+            using (var wrapper = new DbConnectionWrapper(connection))
+            {
+                wrapper.Connection.Execute("CREATE TABLE Parent (ID INTEGER PRIMARY KEY)");
+                wrapper.Connection.Execute("CREATE TABLE Child (ID INTEGER PRIMARY KEY)");
+                wrapper.Connection.Execute("INSERT INTO Parent(ID) VALUES (1)");
+                wrapper.Connection.Execute("INSERT INTO Child(ID) VALUES (1)");
+            }
+
+            connection = DbHelper.GetDbConnection("test.db");
+            int childRows, parentRows;
+            using (var wrapper = new DbConnectionWrapper(connection))
+            {
+                wrapper.StartTransaction();
+
+                childRows = wrapper.Connection.Execute("DELETE FROM Child WHERE ID = 1");
+
+                using (wrapper.AddScope())
+                {
+                    parentRows = wrapper.Connection.Execute("DELETE FROM Parent WHERE ID = 1");
+                }
+
+                wrapper.Commit();
+            }
+
+            Assert.Equal(1, childRows);
+            Assert.Equal(1, parentRows);
+        }
     }
 }

@@ -24,11 +24,24 @@ export class SyncConfigurationService {
     }
 
     getById(id: string): Promise<SyncConfiguration> {
-        return this._http.get(this._configuration.ServerWithBaseUrl + "syncconfigurations/" + id)
+        return this._http.get(`${this._configuration.ServerWithBaseUrl}syncconfigurations/${id}`)
             .toPromise()
             .then((response: Response) => {
                 var data: SyncConfiguration = <SyncConfiguration>response.json();
                 return data;
+            })
+            .catch(this.handleError);
+    }
+
+    deleteById(id: string): Promise<boolean> {
+        return this._http.delete(`${this._configuration.ServerWithBaseUrl}syncconfigurations/${id}`)
+            .toPromise()
+            .then((response: Response) => {
+                if (response.status == 200) {
+                    return true;
+                }
+
+                return false;
             })
             .catch(this.handleError);
     }

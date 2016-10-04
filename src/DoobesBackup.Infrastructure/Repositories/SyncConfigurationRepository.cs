@@ -173,15 +173,17 @@ select * from BackupDestinationConfigItems t1 inner join BackupDestinations t2 o
             {
                 return false;
             }
-            
+
             // Start a new transaction
             using (var db = this.GetDb(true))
             {
+                var success = true;
+
                 // Cleanup source
                 if (syncConfig.Source?.Id.HasValue ?? false)
                 {
                     var backupSourceRepo = new BackupSourceRepository(db);
-                    backupSourceRepo.Delete(syncConfig.Source.Id.Value);
+                    success &= backupSourceRepo.Delete(syncConfig.Source.Id.Value);
                 }
 
                 // Cleanup destinations
@@ -190,12 +192,12 @@ select * from BackupDestinationConfigItems t1 inner join BackupDestinations t2 o
                 {
                     if (dest?.Id.HasValue ?? false)
                     {
-                        backupDestionationRepo.Delete(dest.Id.Value);
+                        success &= backupDestionationRepo.Delete(dest.Id.Value);
                     }
                 }
-                
+
                 // Delete the aggregate root record and commit all the changes if successful
-                if (base.Delete(id))
+                if (success && base.Delete(id))
                 {
                     db.Commit();
                     return true;

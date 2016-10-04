@@ -37,14 +37,5 @@
                 return result;
             }
         }
-
-        public override bool Delete(Guid id)
-        {
-            using (var db = this.GetDb(true))
-            {
-
-            }
-                return base.Delete(id);
-        }
     }
 }
