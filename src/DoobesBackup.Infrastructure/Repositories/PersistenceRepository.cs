@@ -81,6 +81,11 @@ from
         
         public virtual bool Save(PM pm)
         {   
+            if (pm == null)
+            {
+                throw new ArgumentNullException("pm");
+            }
+
             // Insert or update depending on id assignment
             using (var db = this.GetDb())
             {

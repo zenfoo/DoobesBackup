@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit } from "@angular/core";
 import { HealthCheckService } from "../services/health-check.service";
-import {Observable} from "rxjs/Rx";
+import { Observable } from "rxjs/Rx";
 
 @Component({
     moduleId: module.id,
@@ -10,6 +10,7 @@ import {Observable} from "rxjs/Rx";
 
 export class AppComponent implements OnInit {
     title: string = "Doobes Backup";
+    isBackendConnectionHealthy: boolean = false;
 
     constructor(private healthCheckService: HealthCheckService) { }
 
@@ -32,16 +33,19 @@ export class AppComponent implements OnInit {
     initializeHealthCheckPolling(): void {
         Observable
             .interval(10000) // Poll every 10 secs
-            .subscribe((x) => {
-                this.healthCheckService.isHealthy()
-                    .then((isHealthy: boolean) => {
-                        if (!isHealthy) {
-                            console && console.log(`[Healthcheck] Lost connection with backend!`);
-                            alert("Lost connection with backend service! Click OK to reload the app.");
-                            window.location.replace("/");
-                            return;
-                        }
-                    });
+            .subscribe((x: number) => {
+                if (this.isBackendConnectionHealthy) {
+                    this.healthCheckService.isHealthy()
+                        .then((isHealthy: boolean) => {
+                            if (!isHealthy) {
+                                this.isBackendConnectionHealthy = false;
+                                console && console.log(`[Healthcheck] Lost connection with backend!`);
+                                alert("Lost connection with backend service! Click OK to reload the app.");
+                                window.location.replace("/");
+                                return;
+                            }
+                        });
+                }
             });
     }
 }

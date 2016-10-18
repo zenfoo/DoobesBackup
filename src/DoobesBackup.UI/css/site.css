@@ -4,6 +4,8 @@ h2 { font-size: 22px; color: #333333; }
 .container { width: 100%; }
 .left-col { padding: 10px; }
 .right-col { padding: 10px; }
+.top-controls { margin-bottom: 5px; clear: both; overflow: hidden; padding: 5px; }
+.top-controls > * { float: right; }
 
 .navbar { margin: 0; }
 

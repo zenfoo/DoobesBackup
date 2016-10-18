@@ -8,6 +8,7 @@ import { NotFoundComponent } from "./components/not-found.component";
 const appRoutes: Routes = [
     { path: "syncconfigurations", component: SyncConfigurationListComponent },
     { path: "syncconfigurations/:id", component: SyncConfigurationEditComponent },
+    { path: "syncconfigurations/add", component: SyncConfigurationEditComponent },
     { path: "", redirectTo: "/dashboard", pathMatch: "full" },
     { path: "dashboard", component: DashboardComponent },
     { path: '404', component: NotFoundComponent },

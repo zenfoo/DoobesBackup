@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 import { Hero } from "../models/hero.model";
 import { SyncConfigurationService } from "../services/sync-configuration.service";
 import { SyncConfiguration } from "../models/sync-configuration.model";
@@ -14,7 +15,9 @@ export class SyncConfigurationListComponent implements OnInit {
     selectedSyncConfiguration: SyncConfiguration;
     syncConfigurations: SyncConfiguration[];
 
-    constructor(private syncConfigurationService: SyncConfigurationService) { }
+    constructor(
+        private syncConfigurationService: SyncConfigurationService,
+        private router: Router) { }
 
     onSelect(syncConfig: SyncConfiguration): void {
         this.selectedSyncConfiguration = syncConfig;
@@ -29,6 +32,10 @@ export class SyncConfigurationListComponent implements OnInit {
 
     ngOnInit():void {
         this.getSyncConfigurations();
+    }
+
+    onAddBtnClick(): void {
+        this.router.navigate(["/syncconfigurations", "add"]);
     }
 
 }

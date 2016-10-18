@@ -41,8 +41,11 @@ select d1.* from BackupDestinationConfigItems d1 inner join BackupDestinations d
                         return null;
                     }
 
-                    syncConfig.Source = multi.Read<BackupSourcePM>().Single();
-                    syncConfig.Source.Config = new Collection<SourceConfigItemPM>(multi.Read<SourceConfigItemPM>().ToList());
+                    syncConfig.Source = multi.Read<BackupSourcePM>().SingleOrDefault();
+                    if (syncConfig.Source != null)
+                    {
+                        syncConfig.Source.Config = new Collection<SourceConfigItemPM>(multi.Read<SourceConfigItemPM>().ToList());
+                    }
                     syncConfig.Destinations = new Collection<BackupDestinationPM>(multi.Read<BackupDestinationPM>().ToList());
 
                     foreach (var dest in syncConfig.Destinations)
@@ -124,7 +127,11 @@ select * from BackupDestinationConfigItems t1 inner join BackupDestinations t2 o
 
         public override bool Save(SyncConfiguration entity)
         {
-            // TODO: consider exposing transactions outside the repository layer so the client can decide...
+            if (entity == null)
+            {
+                throw new ArgumentNullException("entity");
+            }
+            
             using (var db = this.GetDb(true))
             {
                 var result = true;
@@ -138,11 +145,13 @@ select * from BackupDestinationConfigItems t1 inner join BackupDestinations t2 o
                 }
 
                 // Insert the backup source
-                var backupSourceRepo = new BackupSourceRepository(db);
-                result &= backupSourceRepo.Save(pm.Source);
-                if (!result)
-                {
-                    return false; // Should be rolled back by the open transaction
+                if (pm.Source != null) {
+                    var backupSourceRepo = new BackupSourceRepository(db);
+                    result &= backupSourceRepo.Save(pm.Source);
+                    if (!result)
+                    {
+                        return false; // Should be rolled back by the open transaction
+                    }
                 }
 
                 // Insert each destination record

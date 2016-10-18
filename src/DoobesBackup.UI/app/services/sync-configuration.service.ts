@@ -2,7 +2,7 @@
 import { HEROES } from "./mock-heroes";
 import { Hero } from "../models/hero.model";
 import { SyncConfiguration } from "../models/sync-configuration.model";
-import { Http, Response, Headers } from "@angular/http";
+import { Http, Response, Headers, RequestOptions } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 import { AppConfiguration } from "../app-configuration";
 import "rxjs/add/operator/map";
@@ -14,7 +14,8 @@ export class SyncConfigurationService {
     constructor(private _http: Http, private _configuration: AppConfiguration) { }
     
     getAllConfigurations(): Promise<SyncConfiguration[]> {
-        return this._http.get(this._configuration.ServerWithBaseUrl + "syncconfigurations")
+        let url: string = this._configuration.ServerWithBaseUrl + "syncconfigurations";
+        return this._http.get(url)
             .toPromise()
             .then((response: Response) => {
                 var data: SyncConfiguration[] = <SyncConfiguration[]>response.json();
@@ -24,7 +25,9 @@ export class SyncConfigurationService {
     }
 
     getById(id: string): Promise<SyncConfiguration> {
-        return this._http.get(`${this._configuration.ServerWithBaseUrl}syncconfigurations/${id}`)
+        let url: string = `${this._configuration.ServerWithBaseUrl}syncconfigurations/${id}`;
+
+        return this._http.get(url)
             .toPromise()
             .then((response: Response) => {
                 var data: SyncConfiguration = <SyncConfiguration>response.json();
@@ -34,18 +37,44 @@ export class SyncConfigurationService {
     }
 
     deleteById(id: string): Promise<boolean> {
-        return this._http.delete(`${this._configuration.ServerWithBaseUrl}syncconfigurations/${id}`)
+        let url: string = `${this._configuration.ServerWithBaseUrl}syncconfigurations/${id}`;
+
+        return this._http.delete(url)
             .toPromise()
             .then((response: Response) => {
-                if (response.status == 200) {
-                    return true;
-                }
-
-                return false;
+                return response.status == 200;
             })
             .catch(this.handleError);
     }
-    
+
+    create(syncConfig: SyncConfiguration): Promise<boolean> {
+        let url: string = `${this._configuration.ServerWithBaseUrl}syncconfigurations`;
+        let body: string = JSON.stringify(syncConfig);
+        let headers: Headers = new Headers({ "Content-Type": "application/json" });
+        let options: RequestOptions = new RequestOptions({ headers: headers });
+        
+        return this._http.post(url, body, options)
+            .toPromise()
+            .then((response: Response) => {
+                return response.status == 200;
+            })
+            .catch(this.handleError);
+    }
+
+    update(syncConfig: SyncConfiguration): Promise<boolean> {
+        let url: string = `${this._configuration.ServerWithBaseUrl}syncconfigurations/${syncConfig.id}`;
+        let body: string = JSON.stringify(syncConfig);
+        let headers: Headers = new Headers({ "Content-Type": "application/json" });
+        let options: RequestOptions = new RequestOptions({ headers: headers });
+
+        return this._http.put(url, body, options)
+            .toPromise()
+            .then((response: Response) => {
+                return response.status == 200;
+            })
+            .catch(this.handleError);
+    }
+
     private handleError(error: Response): {} {
         console.error(error);
         return Observable.throw(error.json().error || "Server error");

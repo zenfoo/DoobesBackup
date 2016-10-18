@@ -85,9 +85,6 @@ gulp.task("copy:libs", function () {
     var bootstrap = gulp.src(paths.node_modules + "bootstrap/dist/**/*")
         .pipe(gulp.dest(paths.libDest + "bootstrap"));
 
-    var gentelella = gulp.src(paths.node_modules + "gentelella/build/**/*")
-        .pipe(gulp.dest(paths.libDest + "gentelella"));
-
     var jquery = gulp.src(paths.node_modules + "jquery/dist/**/*.js")
         .pipe(gulp.dest(paths.libDest + "jquery"));
 
@@ -104,7 +101,6 @@ gulp.task("copy:libs", function () {
         zonejs,
         reflect,
         bootstrap,
-        gentelella,
         jquery,
         fontawesome);
 });

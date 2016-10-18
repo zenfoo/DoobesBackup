@@ -2,7 +2,7 @@
   "_args": [
     [
       "font-awesome@^4.6.3",
-      "D:\\Source\\Repos\\DoobesBackup\\DoobesBackup.UI"
+      "D:\\Source\\Repos\\DoobesBackup\\src\\DoobesBackup.UI"
     ]
   ],
   "_from": "font-awesome@>=4.6.3-0 <5.0.0-0",
@@ -35,7 +35,7 @@
   "_shasum": "86933651540ee00874c664017f50f2172f6531a2",
   "_shrinkwrap": null,
   "_spec": "font-awesome@^4.6.3",
-  "_where": "D:\\Source\\Repos\\DoobesBackup\\DoobesBackup.UI",
+  "_where": "D:\\Source\\Repos\\DoobesBackup\\src\\DoobesBackup.UI",
   "author": {
     "email": "dave@fontawesome.io",
     "name": "Dave Gandy",

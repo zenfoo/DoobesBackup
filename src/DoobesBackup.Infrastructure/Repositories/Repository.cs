@@ -58,6 +58,11 @@ namespace DoobesBackup.Infrastructure
         
         public virtual bool Save(DM entity)
         {
+            if (entity == null)
+            {
+                throw new ArgumentNullException("entity");
+            }
+
             // Map to persistence model
             var pm = AutoMapper.Mapper.Map<PM>(entity);
             var success = this.SavePM(pm);

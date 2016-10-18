@@ -10,7 +10,11 @@
 
         public override bool Save(BackupSourcePM pm)
         {
-            // TODO: consider exposing transactions outside the repository layer so the client can decide...
+            if (pm == null)
+            {
+                throw new ArgumentNullException("pm");
+            }
+
             using (var db = this.GetDb(true))
             {
                 var result = true;

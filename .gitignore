@@ -245,3 +245,4 @@ Stylecop.Cache
 # Exclude js files within the app folder - will be built from TS
 src/DoobesBackup.UI/app/**/*.js
 src/DoobesBackup.UI/app/**/*.js.map
+*.DS_Store
