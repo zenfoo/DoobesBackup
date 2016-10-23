@@ -34,6 +34,7 @@ export class AppComponent implements OnInit {
         Observable
             .interval(10000) // Poll every 10 secs
             .subscribe((x: number) => {
+                console && console.log("Healthcheck...");
                 if (this.isBackendConnectionHealthy) {
                     this.healthCheckService.isHealthy()
                         .then((isHealthy: boolean) => {

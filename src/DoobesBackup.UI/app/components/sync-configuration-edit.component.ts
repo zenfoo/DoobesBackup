@@ -15,6 +15,18 @@ export class SyncConfigurationEditComponent implements OnInit {
     title:string = "Edit sync configuration";
     model: SyncConfiguration = new SyncConfiguration();
     isEditMode: boolean = false;
+    
+    handleSubmitResult: (s:boolean) => void = (success: boolean): void => {
+        if (success) {
+            this.router.navigate(["/syncconfigurations"]);
+        } else {
+            alert("Put in an error handling message here");
+        }
+    }
+
+    handleSubmitError: (e:any) => void = (error: any): void => {
+        alert("Some error occurred");
+    }
 
     constructor(
         private syncConfigurationService: SyncConfigurationService,
@@ -69,18 +81,6 @@ export class SyncConfigurationEditComponent implements OnInit {
                 })
                 .catch(this.handleSubmitError);
         }
-    }
-
-    handleSubmitResult = (success: boolean): void => {
-        if (success) {
-            this.router.navigate(["/syncconfigurations"]);
-        } else {
-            alert("Put in an error handling message here");
-        }
-    }
-
-    handleSubmitError = (error: any): void => {
-        alert("Some error occurred");
     }
 }
 

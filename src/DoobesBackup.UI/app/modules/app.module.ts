@@ -1,5 +1,5 @@
 ﻿import { NgModule } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import { BrowserModule } from "@angular/platform-browser";
 import { AppComponent }  from "../components/app.component";
@@ -15,7 +15,7 @@ import { NotFoundComponent } from "../components/not-found.component";
 import { HealthCheckService } from "../services/health-check.service";
 
 @NgModule({
-    imports: [ BrowserModule, FormsModule, HttpModule, routing ],
+    imports: [ BrowserModule, FormsModule, HttpModule, routing, ReactiveFormsModule ],
     declarations: [
         AppComponent,
         DashboardComponent,

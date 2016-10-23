@@ -5,6 +5,6 @@ export class SyncConfiguration {
     id: string;
     name: string;
     intervalSeconds: number;
-    //source: BackupSource;
+    source: BackupSource;
     //destination: BackupDestination;
 }

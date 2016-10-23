@@ -5,6 +5,7 @@ import { SyncConfiguration } from "../models/sync-configuration.model";
 import { Http, Response, Headers, RequestOptions } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 import { AppConfiguration } from "../app-configuration";
+import 'rxjs/add/operator/toPromise';
 import "rxjs/add/operator/map";
 import "rxjs/Rx";
 
