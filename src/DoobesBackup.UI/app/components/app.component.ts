@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
                     alert("Could not connect to backend service! Click OK to reload the app.");
                     window.location.replace("/");
                 } else {
+                    this.isBackendConnectionHealthy = true;
                     this.initializeHealthCheckPolling();
                 }
             });
@@ -34,7 +35,7 @@ export class AppComponent implements OnInit {
         Observable
             .interval(10000) // Poll every 10 secs
             .subscribe((x: number) => {
-                console && console.log("Healthcheck...");
+                console && console.log("[Healthcheck] Testing...");
                 if (this.isBackendConnectionHealthy) {
                     this.healthCheckService.isHealthy()
                         .then((isHealthy: boolean) => {
@@ -44,6 +45,8 @@ export class AppComponent implements OnInit {
                                 alert("Lost connection with backend service! Click OK to reload the app.");
                                 window.location.replace("/");
                                 return;
+                            } else {
+                                console && console.log("[Healthcheck] OK");
                             }
                         });
                 }
