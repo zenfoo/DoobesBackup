@@ -154,22 +154,24 @@ where
             sb.Append($@"
 update  
     {this.TableName} 
-set");
+set
+");
             var ii = 0;
             foreach (var column in columns)
             {
                 // Retrieve the appropriate value to store
                 queryParams[column.Name] = GetPropertyValueFromPath(pm, column.PropertyPath);
 
-                // Add the query line
-                sb.Append(string.Format("{0}{1} = @{1}",
+                // Add the query line, with comma for each line after the first
+                sb.Append(string.Format("\t{0}{1} = @{1}\r\n",
                     ii > 0 ? "," : string.Empty,
                     column.Name));
+
                 ii++;
             }
             sb.Append(@"
 where   
-    _Id = @Id");
+    _Id = @_Id");
 
             return sb.ToString();
         }

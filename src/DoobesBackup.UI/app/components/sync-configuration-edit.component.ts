@@ -2,8 +2,10 @@ import { Component, OnInit } from "@angular/core";
 import { Hero } from "../models/hero.model";
 import { SyncConfigurationService } from "../services/sync-configuration.service";
 import { SyncConfiguration } from "../models/sync-configuration.model";
+import { DropDownOptionModel } from "../models/drop-down-option.model";
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormGroup } from "@angular/forms";
+import { SyncConfigurationEditViewModel } from "../viewmodels/sync-configuration-edit.viewmodel";
 
 @Component({
     moduleId: module.id,
@@ -13,7 +15,7 @@ import { FormGroup } from "@angular/forms";
 
 export class SyncConfigurationEditComponent implements OnInit {
     title:string = "Edit sync configuration";
-    model: SyncConfiguration = new SyncConfiguration();
+    model: SyncConfigurationEditViewModel = new SyncConfigurationEditViewModel();
     isEditMode: boolean = false;
     
     handleSubmitResult: (s:boolean) => void = (success: boolean): void => {
@@ -36,7 +38,7 @@ export class SyncConfigurationEditComponent implements OnInit {
     loadSyncConfiguration(id: string):void {
         this.syncConfigurationService.getById(id)
             .then((syncConfiguration: SyncConfiguration) => {
-                this.model = syncConfiguration;
+                this.model.syncConfig = syncConfiguration;
             });
     }
 
@@ -55,11 +57,11 @@ export class SyncConfigurationEditComponent implements OnInit {
 
     onSubmit(syncConfigForm: FormGroup): void {
         if (this.isEditMode) {
-            this.syncConfigurationService.update(this.model)
+            this.syncConfigurationService.update(this.model.syncConfig)
                 .then(this.handleSubmitResult)
                 .catch(this.handleSubmitError);
         } else {
-            this.syncConfigurationService.create(this.model)
+            this.syncConfigurationService.create(this.model.syncConfig)
                 .then(this.handleSubmitResult)
                 .catch(this.handleSubmitError);
         }
@@ -75,7 +77,7 @@ export class SyncConfigurationEditComponent implements OnInit {
 
     onDelete(): void {
         if (confirm("Are you sure you want to delete this configuration?")) {
-            this.syncConfigurationService.deleteById(this.model.id)
+            this.syncConfigurationService.deleteById(this.model.syncConfig.id)
                 .then((success: boolean) => {
                     this.router.navigate(["/syncconfigurations"]);
                 })

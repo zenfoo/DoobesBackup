@@ -36,20 +36,20 @@ export class AppComponent implements OnInit {
             .interval(10000) // Poll every 10 secs
             .subscribe((x: number) => {
                 console && console.log("[Healthcheck] Testing...");
-                if (this.isBackendConnectionHealthy) {
-                    this.healthCheckService.isHealthy()
-                        .then((isHealthy: boolean) => {
-                            if (!isHealthy) {
-                                this.isBackendConnectionHealthy = false;
-                                console && console.log(`[Healthcheck] Lost connection with backend!`);
-                                alert("Lost connection with backend service! Click OK to reload the app.");
-                                window.location.replace("/");
-                                return;
-                            } else {
-                                console && console.log("[Healthcheck] OK");
-                            }
-                        });
-                }
+                this.healthCheckService.isHealthy()
+                    .then((isHealthy: boolean) => {
+                        if (!isHealthy && this.isBackendConnectionHealthy) {
+                            this.isBackendConnectionHealthy = false;
+                            console && console.log(`[Healthcheck] Lost connection with backend!`);
+                            alert("Lost connection with backend service! Click OK to reload the app.");
+                            window.location.replace("/");
+                            return;
+                        } else if (!isHealthy) {
+                            console && console.log("[Healthcheck] Still unhealthy...");
+                        } else {
+                            console && console.log("[Healthcheck] OK");
+                        }
+                    });
             });
     }
 }

@@ -44,6 +44,7 @@
   </PropertyGroup>
   <ItemGroup>
     <TypeScriptCompile Include="app\app.routing.ts" />
+    <TypeScriptCompile Include="app\models\drop-down-option.model.ts" />
     <TypeScriptCompile Include="app\components\not-found.component.ts" />
     <TypeScriptCompile Include="app\components\dashboard.component.ts" />
     <TypeScriptCompile Include="app\components\main-menu.component.ts" />
@@ -1626,6 +1627,7 @@
     <TypeScriptCompile Include="app\main.ts" />
     <TypeScriptCompile Include="app\models\backup-destination.model.ts" />
     <TypeScriptCompile Include="app\models\hero.model.ts" />
+    <TypeScriptCompile Include="app\viewmodels\sync-configuration-edit.viewmodel.ts" />
     <TypeScriptCompile Include="typings\app\app.component.d.ts" />
     <TypeScriptCompile Include="typings\app\main.d.ts" />
     <TypeScriptCompile Include="typings\globals\core-js\index.d.ts" />
@@ -1636,6 +1638,7 @@
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -1654,7 +1657,7 @@
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:50406/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>True</UseCustomServer>
+          <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>http://localhost</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
