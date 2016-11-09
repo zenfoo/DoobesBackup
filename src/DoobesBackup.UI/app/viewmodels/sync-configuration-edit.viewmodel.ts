@@ -11,4 +11,10 @@ export class SyncConfigurationEditViewModel {
         new DropDownOptionModel(7200, "2 hours"),
         new DropDownOptionModel(86400, "24 hours")
     ];
+    backupSourceTypes: Array<DropDownOptionModel> = [
+        new DropDownOptionModel(1, "Local Filesystem"),
+        new DropDownOptionModel(2, "Network Share"),
+        new DropDownOptionModel(3, "AWS S3")
+    ];
+    backupSourceType: string;
 }
