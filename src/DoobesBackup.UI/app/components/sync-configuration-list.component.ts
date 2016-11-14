@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { Hero } from "../models/hero.model";
 import { SyncConfigurationService } from "../services/sync-configuration.service";
 import { SyncConfiguration } from "../models/sync-configuration.model";
 

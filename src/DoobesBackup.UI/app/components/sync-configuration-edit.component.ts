@@ -1,11 +1,11 @@
 import { Component, OnInit } from "@angular/core";
-import { Hero } from "../models/hero.model";
 import { SyncConfigurationService } from "../services/sync-configuration.service";
 import { SyncConfiguration } from "../models/sync-configuration.model";
 import { DropDownOptionModel } from "../models/drop-down-option.model";
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormGroup } from "@angular/forms";
 import { SyncConfigurationEditViewModel } from "../viewmodels/sync-configuration-edit.viewmodel";
+import { BackupSourceConfigComponent } from "./backup-source-config.component";
 
 @Component({
     moduleId: module.id,
@@ -16,7 +16,6 @@ import { SyncConfigurationEditViewModel } from "../viewmodels/sync-configuration
 export class SyncConfigurationEditComponent implements OnInit {
     title:string = "Edit sync configuration";
     model: SyncConfigurationEditViewModel = new SyncConfigurationEditViewModel();
-    isEditMode: boolean = false;
     
     handleSubmitResult: (s:boolean) => void = (success: boolean): void => {
         if (success) {
@@ -47,16 +46,16 @@ export class SyncConfigurationEditComponent implements OnInit {
             let id: string = params["id"]; // +params['id']; // (+) converts string 'id' to a number
 
             if (id.toLowerCase() == "add") {
-                this.isEditMode = false;
+                this.model.isEditMode = false;
             } else {
-                this.isEditMode = true;
+                this.model.isEditMode = true;
                 this.loadSyncConfiguration(id);
             }
         });
     }
 
     onSubmit(syncConfigForm: FormGroup): void {
-        if (this.isEditMode) {
+        if (this.model.isEditMode) {
             this.syncConfigurationService.update(this.model.syncConfig)
                 .then(this.handleSubmitResult)
                 .catch(this.handleSubmitError);
@@ -65,6 +64,10 @@ export class SyncConfigurationEditComponent implements OnInit {
                 .then(this.handleSubmitResult)
                 .catch(this.handleSubmitError);
         }
+    }
+
+    onBackupSourceTypeChange(selectedValue: string): void {
+        this.model.backupSourceType = parseInt(selectedValue);
     }
 
     onCancel(syncConfigForm: FormGroup): void {

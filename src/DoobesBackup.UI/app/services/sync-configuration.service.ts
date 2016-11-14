@@ -1,6 +1,4 @@
 ﻿import { Injectable } from "@angular/core";
-import { HEROES } from "./mock-heroes";
-import { Hero } from "../models/hero.model";
 import { SyncConfiguration } from "../models/sync-configuration.model";
 import { Http, Response, Headers, RequestOptions } from "@angular/http";
 import { Observable } from "rxjs/Observable";
