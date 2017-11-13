@@ -7,18 +7,17 @@ namespace DoobesBackup.Infrastructure
 {
     using Dapper;
     using Extensions;
+    using Framework;
     using Microsoft.Data.Sqlite;
     using PersistenceModels;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Data;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Text;
-    using System.Diagnostics;
-    using System.IO;
-    using Framework;
 
     /// <summary>
     /// Helper class for dealing with SqLite database implementation

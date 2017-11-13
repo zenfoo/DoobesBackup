@@ -5,8 +5,6 @@
 //-----------------------------------------------------------------------
 namespace DoobesBackup.Domain.UnitTests
 {
-    using System.Linq;
-    using System.Reflection;
     using Xunit;
 
     /// <summary>

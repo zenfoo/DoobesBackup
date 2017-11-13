@@ -5,9 +5,6 @@
 //-----------------------------------------------------------------------
 namespace DoobesBackup.Domain.UnitTests
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using Xunit;
 
     /// <summary>
@@ -21,7 +18,7 @@ namespace DoobesBackup.Domain.UnitTests
             var sc = new SyncConfiguration("Test configuration");
             var destination = new BackupDestination("Some destination", "FileTarget");
             sc.AddBackupDestination(destination);
-            var exception = Assert.Throws(typeof(DomainException), () => sc.AddBackupDestination(destination));
+            var exception = Assert.Throws<DomainException>(() => sc.AddBackupDestination(destination));
         }
     }
 }
