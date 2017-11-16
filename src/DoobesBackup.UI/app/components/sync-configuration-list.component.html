@@ -1,0 +1,12 @@
+﻿<h2>{{title}}</h2>
+<div class="top-controls">
+    <button type="button" (click)="onAddBtnClick()" class="btn btn-primary">Add</button>
+</div>
+<ul class="sync-configurations item-list">
+    <li *ngFor="let syncConfig of syncConfigurations; let ii = index;"
+        (click)="onSelect(syncConfig)"
+        [class.selected]="syncConfig === selectedSyncConfig">
+        <span class="title">{{syncConfig.name}}</span>
+        <a routerLink="/syncconfigurations/{{syncConfig.id}}" class="btn btn-default btn-edit">Edit</a>
+    </li>
+</ul>

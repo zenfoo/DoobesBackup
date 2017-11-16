@@ -2,12 +2,14 @@
 <html>
 <head>
     <script>document.write('<base href="' + document.location + '" />');</script>
-    <title>Angular.io QuickStart</title>
+    <title>Doobes Backup</title>
     <base href="/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
     <base href="/">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/site.css">
 
     <!-- Polyfill(s) for older browsers -->
     <script src="node_modules/core-js/client/shim.min.js"></script>
@@ -18,7 +20,15 @@
         System.import('app/main.js').catch(function (err) { console.error(err); });
     </script>
 </head>
-<body>
-    <my-app>Loading App</my-app>
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            <doobes-app>
+                <div class="loading-panel">
+                    <p class="loading-text">Loading, please wait...</p>
+                </div>
+            </doobes-app>
+        </div>
+    </div>
 </body>
 </html>

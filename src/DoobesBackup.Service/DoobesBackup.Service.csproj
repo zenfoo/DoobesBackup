@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
     <PreserveCompilationContext>true</PreserveCompilationContext>
     <AssemblyName>DoobesBackup.Service</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>DoobesBackup.Service</PackageId>
-    <RuntimeFrameworkVersion>1.0.4</RuntimeFrameworkVersion>
+    <StartupObject>DoobesBackup.Service.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>

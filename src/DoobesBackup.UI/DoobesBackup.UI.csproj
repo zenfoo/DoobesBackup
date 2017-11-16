@@ -1,8 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
-  <Import Project="..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -49,9 +47,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Net.Http" />
@@ -71,59 +66,159 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http.Formatting">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http.WebHost">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="app\app.component.css" />
-    <Content Include="app\app.component.html" />
-    <Content Include="Global.asax" />
+    <Content Include="app\app-configuration.js" />
+    <Content Include="app\app.routing.js" />
+    <Content Include="app\components\app.component.html" />
+    <Content Include="app\components\app.component.js" />
+    <Content Include="app\components\backup-source-config.component.html" />
+    <Content Include="app\components\backup-source-config.component.js" />
+    <Content Include="app\components\dashboard.component.js" />
+    <Content Include="app\components\drop-down.model.js" />
+    <Content Include="app\components\hero-detail.component.js" />
+    <Content Include="app\components\main-menu.component.js" />
+    <Content Include="app\components\not-found.component.js" />
+    <Content Include="app\components\sync-configuration-edit.component.html" />
+    <Content Include="app\components\sync-configuration-edit.component.js" />
+    <Content Include="app\components\sync-configuration-list.component.html" />
+    <Content Include="app\components\sync-configuration-list.component.js" />
+    <Content Include="app\main.js" />
+    <Content Include="app\models\backup-destination.model.js" />
+    <Content Include="app\models\backup-source.model.js" />
+    <Content Include="app\models\drop-down-option.model.js" />
+    <Content Include="app\models\hero.model.js" />
+    <Content Include="app\models\menu-item.model.js" />
+    <Content Include="app\models\sync-configuration.model.js" />
+    <Content Include="app\modules\app.module.js" />
+    <Content Include="app\services\health-check.service.js" />
+    <Content Include="app\services\mock-heroes.js" />
+    <Content Include="app\services\sync-configuration.service.js" />
+    <Content Include="app\viewmodels\sync-configuration-edit-viewmodel.js" />
+    <Content Include="app\viewmodels\sync-configuration-edit.viewmodel.js" />
+    <Content Include="css\site.css" />
     <Content Include="index.html" />
+    <Content Include="lib\bootstrap\css\bootstrap-theme.css" />
+    <Content Include="lib\bootstrap\css\bootstrap-theme.min.css" />
+    <Content Include="lib\bootstrap\css\bootstrap.css" />
+    <Content Include="lib\bootstrap\css\bootstrap.min.css" />
+    <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="lib\bootstrap\js\bootstrap.js" />
+    <Content Include="lib\bootstrap\js\bootstrap.min.js" />
+    <Content Include="lib\bootstrap\js\npm.js" />
+    <Content Include="lib\font-awesome\css\font-awesome.css" />
+    <Content Include="lib\font-awesome\css\font-awesome.min.css" />
+    <Content Include="lib\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="lib\font-awesome\HELP-US-OUT.txt" />
     <Content Include="styles.css" />
     <Content Include="systemjs.config.extras.js" />
     <Content Include="systemjs.config.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
     <Content Include="package.json" />
     <Content Include="tsconfig.json" />
+    <Content Include="app\app-configuration.js.map" />
+    <Content Include="app\app.routing.js.map" />
+    <Content Include="app\components\app.component.js.map" />
+    <Content Include="app\components\backup-source-config.component.js.map" />
+    <Content Include="app\components\dashboard.component.js.map" />
+    <Content Include="app\components\drop-down.model.js.map" />
+    <Content Include="app\components\hero-detail.component.js.map" />
+    <Content Include="app\components\main-menu.component.js.map" />
+    <Content Include="app\components\not-found.component.js.map" />
+    <Content Include="app\components\sync-configuration-edit.component.js.map" />
+    <Content Include="app\components\sync-configuration-list.component.js.map" />
+    <Content Include="app\main.js.map" />
+    <Content Include="app\models\backup-destination.model.js.map" />
+    <Content Include="app\models\backup-source.model.js.map" />
+    <Content Include="app\models\drop-down-option.model.js.map" />
+    <Content Include="app\models\hero.model.js.map" />
+    <Content Include="app\models\menu-item.model.js.map" />
+    <Content Include="app\models\sync-configuration.model.js.map" />
+    <Content Include="app\modules\app.module.js.map" />
+    <Content Include="app\services\health-check.service.js.map" />
+    <Content Include="app\services\mock-heroes.js.map" />
+    <Content Include="app\services\sync-configuration.service.js.map" />
+    <Content Include="app\viewmodels\sync-configuration-edit-viewmodel.js.map" />
+    <Content Include="app\viewmodels\sync-configuration-edit.viewmodel.js.map" />
+    <Content Include="lib\bootstrap\css\bootstrap-theme.css.map" />
+    <Content Include="lib\bootstrap\css\bootstrap-theme.min.css.map" />
+    <Content Include="lib\bootstrap\css\bootstrap.css.map" />
+    <Content Include="lib\bootstrap\css\bootstrap.min.css.map" />
+    <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="lib\font-awesome\css\font-awesome.css.map" />
+    <Content Include="lib\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="lib\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="lib\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="lib\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="lib\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="lib\font-awesome\less\animated.less" />
+    <Content Include="lib\font-awesome\less\bordered-pulled.less" />
+    <Content Include="lib\font-awesome\less\core.less" />
+    <Content Include="lib\font-awesome\less\fixed-width.less" />
+    <Content Include="lib\font-awesome\less\font-awesome.less" />
+    <Content Include="lib\font-awesome\less\icons.less" />
+    <Content Include="lib\font-awesome\less\larger.less" />
+    <Content Include="lib\font-awesome\less\list.less" />
+    <Content Include="lib\font-awesome\less\mixins.less" />
+    <Content Include="lib\font-awesome\less\path.less" />
+    <Content Include="lib\font-awesome\less\rotated-flipped.less" />
+    <Content Include="lib\font-awesome\less\screen-reader.less" />
+    <Content Include="lib\font-awesome\less\stacked.less" />
+    <Content Include="lib\font-awesome\less\variables.less" />
+    <Content Include="lib\font-awesome\package.json" />
+    <Content Include="lib\font-awesome\README.md" />
+    <Content Include="lib\font-awesome\scss\font-awesome.scss" />
+    <Content Include="lib\font-awesome\scss\_animated.scss" />
+    <Content Include="lib\font-awesome\scss\_bordered-pulled.scss" />
+    <Content Include="lib\font-awesome\scss\_core.scss" />
+    <Content Include="lib\font-awesome\scss\_fixed-width.scss" />
+    <Content Include="lib\font-awesome\scss\_icons.scss" />
+    <Content Include="lib\font-awesome\scss\_larger.scss" />
+    <Content Include="lib\font-awesome\scss\_list.scss" />
+    <Content Include="lib\font-awesome\scss\_mixins.scss" />
+    <Content Include="lib\font-awesome\scss\_path.scss" />
+    <Content Include="lib\font-awesome\scss\_rotated-flipped.scss" />
+    <Content Include="lib\font-awesome\scss\_screen-reader.scss" />
+    <Content Include="lib\font-awesome\scss\_stacked.scss" />
+    <Content Include="lib\font-awesome\scss\_variables.scss" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <Content Include="yarn.lock" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="app\app.component.ts" />
-    <TypeScriptCompile Include="app\app.module.ts" />
+    <TypeScriptCompile Include="app\app-configuration.ts" />
+    <TypeScriptCompile Include="app\app.routing.ts" />
+    <TypeScriptCompile Include="app\components\app.component.ts" />
+    <TypeScriptCompile Include="app\components\backup-source-config.component.ts" />
+    <TypeScriptCompile Include="app\components\dashboard.component.ts" />
+    <TypeScriptCompile Include="app\components\main-menu.component.ts" />
+    <TypeScriptCompile Include="app\components\not-found.component.ts" />
+    <TypeScriptCompile Include="app\components\sync-configuration-edit.component.ts" />
+    <TypeScriptCompile Include="app\components\sync-configuration-list.component.ts" />
     <TypeScriptCompile Include="app\main.ts" />
+    <TypeScriptCompile Include="app\models\backup-destination.model.ts" />
+    <TypeScriptCompile Include="app\models\backup-source.model.ts" />
+    <TypeScriptCompile Include="app\models\drop-down-option.model.ts" />
+    <TypeScriptCompile Include="app\models\menu-item.model.ts" />
+    <TypeScriptCompile Include="app\models\sync-configuration.model.ts" />
+    <TypeScriptCompile Include="app\modules\app.module.ts" />
+    <TypeScriptCompile Include="app\services\health-check.service.ts" />
+    <TypeScriptCompile Include="app\services\sync-configuration.service.ts" />
+    <TypeScriptCompile Include="app\viewmodels\sync-configuration-edit.viewmodel.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -151,13 +246,6 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
-    <Error Condition="!Exists('..\..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props'))" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
