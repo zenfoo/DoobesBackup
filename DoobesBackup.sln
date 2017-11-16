@@ -25,8 +25,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoobesBackup.Infrastructure
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoobesBackup.Service.UnitTests", "test\DoobesBackup.Service.UnitTests\DoobesBackup.Service.UnitTests.csproj", "{5418599E-108F-4AE7-A452-E35700F39FB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoobesBackup.UI", "src\DoobesBackup.UI\DoobesBackup.UI.csproj", "{64E1E578-360B-4F3B-B9F7-B0D3D8541890}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoobesBackup.Framework", "src\DoobesBackup.Framework\DoobesBackup.Framework.csproj", "{F37F9A6B-8EF9-4813-8C24-BFB12CDF87C3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoobesBackup.Infrastructure.UnitTests", "test\DoobesBackup.Infrastructure.UnitTests\DoobesBackup.Infrastructure.UnitTests.csproj", "{E2E722FD-8E75-4FC2-A1ED-47DE33821C7C}"
@@ -34,6 +32,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoobesBackup.Framework.UnitTests", "test\DoobesBackup.Framework.UnitTests\DoobesBackup.Framework.UnitTests.csproj", "{D60F82DB-F850-4B8A-8982-951792F778EB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoobesBackup.Infrastructure.IntegrationTests", "test\DoobesBackup.Infrastructure.IntegrationTests\DoobesBackup.Infrastructure.IntegrationTests.csproj", "{46A645E3-D2EA-4F88-86B3-0459FDE1DBE0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoobesBackup.UI", "src\DoobesBackup.UI\DoobesBackup.UI.csproj", "{179C47C7-F3A9-4645-8869-CF444001B9D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,10 +61,6 @@ Global
 		{5418599E-108F-4AE7-A452-E35700F39FB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5418599E-108F-4AE7-A452-E35700F39FB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5418599E-108F-4AE7-A452-E35700F39FB5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{64E1E578-360B-4F3B-B9F7-B0D3D8541890}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{64E1E578-360B-4F3B-B9F7-B0D3D8541890}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{64E1E578-360B-4F3B-B9F7-B0D3D8541890}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{64E1E578-360B-4F3B-B9F7-B0D3D8541890}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F37F9A6B-8EF9-4813-8C24-BFB12CDF87C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F37F9A6B-8EF9-4813-8C24-BFB12CDF87C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F37F9A6B-8EF9-4813-8C24-BFB12CDF87C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -81,6 +77,10 @@ Global
 		{46A645E3-D2EA-4F88-86B3-0459FDE1DBE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46A645E3-D2EA-4F88-86B3-0459FDE1DBE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46A645E3-D2EA-4F88-86B3-0459FDE1DBE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{179C47C7-F3A9-4645-8869-CF444001B9D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{179C47C7-F3A9-4645-8869-CF444001B9D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{179C47C7-F3A9-4645-8869-CF444001B9D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{179C47C7-F3A9-4645-8869-CF444001B9D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,11 +91,11 @@ Global
 		{0C5E6E04-A52A-450C-B9B1-806E51857634} = {8DDDCE43-9F84-4D02-9051-70D1B526C067}
 		{70B249E5-4B1F-439A-B8D3-19F022213493} = {0F43EECC-FF4D-48E6-9E86-0D145558B326}
 		{5418599E-108F-4AE7-A452-E35700F39FB5} = {8DDDCE43-9F84-4D02-9051-70D1B526C067}
-		{64E1E578-360B-4F3B-B9F7-B0D3D8541890} = {0F43EECC-FF4D-48E6-9E86-0D145558B326}
 		{F37F9A6B-8EF9-4813-8C24-BFB12CDF87C3} = {0F43EECC-FF4D-48E6-9E86-0D145558B326}
 		{E2E722FD-8E75-4FC2-A1ED-47DE33821C7C} = {8DDDCE43-9F84-4D02-9051-70D1B526C067}
 		{D60F82DB-F850-4B8A-8982-951792F778EB} = {8DDDCE43-9F84-4D02-9051-70D1B526C067}
 		{46A645E3-D2EA-4F88-86B3-0459FDE1DBE0} = {8DDDCE43-9F84-4D02-9051-70D1B526C067}
+		{179C47C7-F3A9-4645-8869-CF444001B9D2} = {0F43EECC-FF4D-48E6-9E86-0D145558B326}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D443EB60-6025-4F56-9177-0E1657C08D5E}
