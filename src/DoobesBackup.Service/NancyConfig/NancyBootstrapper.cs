@@ -14,6 +14,7 @@ namespace DoobesBackup.Service.NancyConfig
     using SimpleInjector.Extensions.ExecutionContextScoping;
     using Infrastructure;
     using Infrastructure.Repositories;
+    using Nancy.Conventions;
 
     /// <summary>
     /// Bootstrap the nancy framework
@@ -64,6 +65,15 @@ namespace DoobesBackup.Service.NancyConfig
                     .WithHeader("Access-Control-Allow-Headers", "Accept, Origin, Content-Type");
 
             });
+        }
+
+        protected override void ConfigureConventions(NancyConventions nancyConventions)
+        {
+            base.ConfigureConventions(nancyConventions);
+
+            nancyConventions.StaticContentsConventions.Add(
+                StaticContentConventionBuilder.AddDirectory("dashboard", @"Dashboard")
+            );
         }
     }
 }

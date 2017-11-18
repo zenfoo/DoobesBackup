@@ -10,6 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="Dashboard\index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DoobesBackup.Domain\DoobesBackup.Domain.csproj" />
     <ProjectReference Include="..\DoobesBackup.Infrastructure\DoobesBackup.Infrastructure.csproj" />
   </ItemGroup>
