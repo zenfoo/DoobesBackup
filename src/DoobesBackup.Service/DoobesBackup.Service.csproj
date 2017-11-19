@@ -34,6 +34,7 @@
     <PackageReference Include="SimpleInjector" Version="3.2.2" />
     <PackageReference Include="SimpleInjector.Extensions.ExecutionContextScoping" Version="3.2.2" />
     <PackageReference Include="AutoMapper" Version="5.1.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.1.5" />
   </ItemGroup>
 
 </Project>

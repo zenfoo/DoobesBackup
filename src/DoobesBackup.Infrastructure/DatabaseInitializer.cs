@@ -5,6 +5,8 @@
 //-----------------------------------------------------------------------
 namespace DoobesBackup.Infrastructure
 {
+    using DoobesBackup.Framework;
+    using DoobesBackup.Infrastructure.Repositories;
     using PersistenceModels;
 
     public static class DatabaseInitializer
@@ -34,6 +36,19 @@ namespace DoobesBackup.Infrastructure
             if (!DbHelper.TableExists("BackupDestinationConfigItems"))
             {
                 DbHelper.CreateTable("BackupDestinationConfigItems", typeof(DestinationConfigItemPM));
+            }
+
+            if (!DbHelper.TableExists("Users"))
+            {
+                DbHelper.CreateTable("Users", typeof(UserPM));
+
+                // Insert the admin user record
+                var userRepo = new UserRepository();
+                userRepo.Save(new UserPM()
+                {
+                    UserName = "admin",
+                    PasswordHash = HashUtil.SlowHash("password")
+                });
             }
         }
     }
