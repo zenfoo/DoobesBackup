@@ -15,6 +15,8 @@ namespace DoobesBackup.Service.NancyConfig
     using Infrastructure;
     using Infrastructure.Repositories;
     using Nancy.Conventions;
+    using DoobesBackup.Service.Configuration;
+    using System.Linq;
 
     /// <summary>
     /// Bootstrap the nancy framework
@@ -26,23 +28,19 @@ namespace DoobesBackup.Service.NancyConfig
             Console.WriteLine("Bootstrapping Nancy...");
             //Console.WriteLine(string.Format("Using smtp server: {0}:{1}", appConfig.Smtp.Server, appConfig.Smtp.Port.ToString()));
 
-            // Create Simple Injector container
-            Container container = new Container();
-            container.Options.DefaultScopedLifestyle = new ExecutionContextScopeLifestyle();
+            // Retrieve the pre-configured container
+            var container = ContainerConfig.GetContainer(this.Modules.Select(m => m.ModuleType));
 
-            // Register application components
-            container.Register<ISyncConfigurationRepository, SyncConfigurationRepository>(Lifestyle.Scoped);
-
-            // Register Nancy modules.
-            foreach (var nancyModule in this.Modules)
-            {
-                container.Register(nancyModule.ModuleType);
-            }
+            //// Register Nancy modules.
+            //foreach (var nancyModule in this.Modules)
+            //{
+            //    container.Register(nancyModule.ModuleType);
+            //}
 
             // Cross-wire Nancy abstractions that application components require (if any). e.g.:
             //container.Register(nancy.Resolve<IModelValidator>);
 
-            // Check the container.
+            // Check the container config is all good once we're done
             container.Verify();
 
             // Hook up Simple Injector in the Nancy pipeline.

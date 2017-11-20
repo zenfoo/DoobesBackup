@@ -3,7 +3,7 @@
 //     Copyright (c) doobes.com. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace DoobesBackup.Domain.UnitTests
+namespace DoobesBackup.Domain.UnitTests.Modules
 {
     using Infrastructure;
     using Moq;
@@ -32,7 +32,7 @@ namespace DoobesBackup.Domain.UnitTests
         /// Test the name property is assigned correctly
         /// </summary>
         [Fact]
-        public async void Should_return_ok_with_correct_route()
+        public async void Get_CorrectRoute_ShouldReturnOk()
         {
             var mockRepo = new Mock<ISyncConfigurationRepository>();
             var bootstrapper = new ConfigurableBootstrapper(

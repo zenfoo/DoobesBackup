@@ -12,6 +12,7 @@ namespace DoobesBackup.Infrastructure.Repositories
     using System.Collections.Generic;
     using System.Linq;
     using System.Collections.ObjectModel;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Implementation of the SyncConfiguration repository
@@ -20,7 +21,7 @@ namespace DoobesBackup.Infrastructure.Repositories
     {
         public UserRepository() : base("Users") { }
 
-        public User GetByUserName(string userName)
+        public async Task<User> GetByUserName(string userName)
         {
             var query = $@"
 select 
@@ -32,7 +33,7 @@ where
 ";
             using (var db = this.GetDb(false))
             {
-                var pm = db.Connection.QuerySingle<UserPM>(query, new { UserName = userName });
+                var pm = await db.Connection.QuerySingleAsync<UserPM>(query, new { UserName = userName });
                 return AutoMapper.Mapper.Map<User>(pm);
             }
         }

@@ -14,5 +14,7 @@ namespace DoobesBackup.Service.Configuration
         /// Gets or sets the smtp configuration
         /// </summary>
         public SmtpSettings Smtp { get; set; }
+
+        public AuthSettings Auth { get; set; }
     }
 }

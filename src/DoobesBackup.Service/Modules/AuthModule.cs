@@ -1,6 +1,7 @@
 ﻿namespace DoobesBackup.Service.Modules
 {
     using DoobesBackup.Service.ResourceModels;
+    using DoobesBackup.Service.Services;
     using Nancy;
     using Nancy.ModelBinding;
 
@@ -9,13 +10,20 @@
     /// </summary>
     public class AuthModule : NancyModule
     { 
-        public AuthModule() : base("/auth")
+        public AuthModule(IAuthService authService) : base("/auth")
         {
-            this.Post("/login", formData =>
+            this.Post("/login", async formData =>
             {
                 var loginModel = this.Bind<LoginRequestRM>();
 
-                return this.Response.AsRedirect("/");
+                var user = await authService.Login(loginModel.Email, loginModel.Password);
+                if (user != null)
+                {
+                    return this.Response.AsJson(new LoginResponseRM() { Token = authService.GenerateUserToken(user) });
+                }
+
+                // Login was not successful
+                return this.Response.AsJson(new LoginResponseRM() { Token = null }, HttpStatusCode.Unauthorized);
             });
         }
     }

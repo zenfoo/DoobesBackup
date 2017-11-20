@@ -3,6 +3,8 @@
     using DoobesBackup.Domain;
     using DoobesBackup.Framework;
     using DoobesBackup.Infrastructure.Repositories;
+    using System;
+    using System.Threading.Tasks;
 
     public class AuthService : IAuthService
     {
@@ -13,10 +15,10 @@
             this.userRepository = userRepository;
         }
         
-        public User Login(string userName, string password)
+        public async Task<User> Login(string userName, string password)
         {
             // Lookup the username
-            var user = this.userRepository.GetByUserName(userName);
+            var user = await this.userRepository.GetByUserName(userName);
 
             // Verify the user exists and authenticate
             if (user != null)
@@ -31,8 +33,19 @@
             }
 
             // If the user does not exist then fake a password verification so we are less susceptible to a timing attack
-            HashUtil.VerifySlowHash("notgoingtousethisvalue", "thisisabadhashvalue");
+            // This is a hash for "password"
+            HashUtil.VerifySlowHash("notgoingtousethisvalue", "$2a$14$dX6l/KBxB/fIDcbEoHVuveqLB7kAX87yzrxvnoD3shF/gC8Ll28J2");
             return null;
+        }
+
+        /// <summary>
+        /// Generate a JWT token
+        /// </summary>
+        /// <param name="authenticatedUser"></param>
+        /// <returns></returns>
+        public string GenerateUserToken(User authenticatedUser)
+        {
+            throw new NotImplementedException();
         }
     }
 }
