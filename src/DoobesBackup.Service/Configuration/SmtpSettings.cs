@@ -5,6 +5,8 @@
 //-----------------------------------------------------------------------
 namespace DoobesBackup.Service.Configuration
 {
+    using DoobesBackup.Framework;
+
     /// <summary>
     /// Describes an Smtp configuration
     /// </summary>
@@ -34,5 +36,13 @@ namespace DoobesBackup.Service.Configuration
         /// Gets or sets the port number to reach the smtp server on
         /// </summary>
         public int Port { get; set; }
+
+        /// <summary>
+        /// Verify that the configuration is valid
+        /// </summary>
+        public void Verify()
+        {
+            AssertThat.IsNotNullOrEmpty(this.Server, "Smtp server was not specified!");
+        }
     }
 }

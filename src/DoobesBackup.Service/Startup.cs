@@ -90,7 +90,7 @@ namespace DoobesBackup.Service
             // Wire up nancy
             app.UseOwin(x => 
                 x.UseNancy(opt => 
-                    opt.Bootstrapper = new NancyBootstrapper()));
+                    opt.Bootstrapper = new NancyBootstrapper(appConfig)));
         }
     }
 }

@@ -23,13 +23,20 @@ namespace DoobesBackup.Service.NancyConfig
     /// </summary>
     public class NancyBootstrapper : DefaultNancyBootstrapper
     {
+        private readonly AppConfiguration appConfig;
+
+        public NancyBootstrapper(AppConfiguration appConfig)
+        {
+            this.appConfig = appConfig;
+        }
+
         protected override void ApplicationStartup(TinyIoCContainer nancy, IPipelines pipelines)
         {
             Console.WriteLine("Bootstrapping Nancy...");
             //Console.WriteLine(string.Format("Using smtp server: {0}:{1}", appConfig.Smtp.Server, appConfig.Smtp.Port.ToString()));
 
             // Retrieve the pre-configured container
-            var container = ContainerConfig.GetContainer(this.Modules.Select(m => m.ModuleType));
+            var container = ContainerConfig.GetContainer(this.appConfig, this.Modules.Select(m => m.ModuleType));
 
             //// Register Nancy modules.
             //foreach (var nancyModule in this.Modules)
